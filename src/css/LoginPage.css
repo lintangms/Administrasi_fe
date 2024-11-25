@@ -1,0 +1,136 @@
+/* Styling untuk halaman login */
+.login-page {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+}
+
+/* Sisi Kiri - Gambar */
+.left-side {
+  flex: 1;
+  background: url('../gambar/BG2.png') no-repeat center center;
+  background-size: cover;
+  height: 101.3vh; /* Pastikan sisi kiri mengisi seluruh tinggi viewport */
+}
+
+/* Logo untuk sisi kiri */
+.left-side::before {
+  content: '';
+  display: block;
+  padding-top: 100%; /* Membuat rasio 1:1 */
+}
+
+/* Sisi Kanan - Form Login */
+.right-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;  /* Maksimum lebar form login */
+  text-align: center;
+  position: relative;
+}
+
+/* Logo di atas form */
+.login-container::before {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 110px;
+  background-image: url('../gambar/BG3.png');
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+  position: absolute;
+  top: -90px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+input {
+  width: 368px; /* Pastikan input mengikuti lebar container */
+  padding: 15px; /* Mengurangi padding agar tidak terlalu lebar */
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;  /* Agar button memiliki lebar yang sama dengan input */
+  padding: 15px;
+  background-color: #ff9100;
+  color: white;
+  border: none;
+  margin: 10px 0;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+/* Notifikasi */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.notification.success {
+  background-color: #4CAF50; /* Hijau untuk sukses */
+}
+
+.notification.error {
+  background-color: #F44336; /* Merah untuk error */
+}
+
+/* Media Queries untuk perangkat mobile */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column; /* Menjadikan layout vertikal pada perangkat mobile */
+  }
+
+  .left-side {
+    display: none; /* Menyembunyikan gambar di sisi kiri pada perangkat mobile */
+  }
+
+  .right-side {
+    width: 100%; /* Memastikan form login memanfaatkan seluruh lebar layar */
+    padding: 20px;
+  }
+
+  .login-container {
+    width: 100%; /* Memastikan kontainer login mengambil seluruh lebar layar */
+    max-width: 350px;  /* Membatasi lebar maksimum pada perangkat mobile */
+  }
+
+  input, button {
+    width: 100%; /* Memastikan input dan button memanfaatkan lebar layar */
+    margin: 10px 0;
+    padding: 12px;  /* Mengurangi padding agar tidak terlalu lebar */
+  }
+}

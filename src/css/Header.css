@@ -1,0 +1,49 @@
+/* Styling untuk header */
+header {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #e04a02;
+  color: white;
+  padding: 5px 10px; /* Mengurangi padding vertikal untuk memperkecil ukuran header */
+  z-index: 999;
+  box-sizing: border-box;
+  transition: width 0.3s ease, margin-left 0.3s ease; /* Menambahkan transisi untuk perubahan lebar */
+}
+
+/* Styling untuk tombol */
+.toggle-btn {
+  background-color: #e04a02;
+  border: none;
+  border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
+  width: 35px; /* Menyesuaikan ukuran tombol */
+  height: 30px; /* Menyesuaikan ukuran tombol */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px; /* Mengurangi jarak antara tombol dan teks */
+  font-size: 18px; /* Menyesuaikan ukuran ikon */
+}
+
+.toggle-btn:hover {
+  background-color: #e04a02;
+  color: white;
+}
+
+/* Styling untuk teks header */
+.header h1 {
+  font-size: 20px; /* Mengurangi ukuran font teks header */
+  color: white;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    display: none; /* Sembunyikan teks "Selamat Datang" saat layar kecil */
+  }
+}

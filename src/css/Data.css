@@ -1,0 +1,284 @@
+/* Data.css */
+.data-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    margin-top: -60px;
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 10px; /* Menurunkan margin bawah agar lebih dekat dengan tabel */
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #d9534f; /* Warna merah untuk error */
+  }
+  
+  .data-table {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Menambahkan shadow pada tabel */
+    border-radius: 5px; /* Membuat sudut tabel sedikit melengkung */
+    overflow: hidden; /* Memastikan shadow hanya keluar dari batas tabel */
+    margin-top: 0; /* Mempersempit jarak antara tabel dan bagian atas */
+  }
+  
+  .data-table th, .data-table td {
+    padding: 6px 8px; /* Mengurangi padding agar jarak antar baris lebih kecil */
+    text-align: left;
+    border-bottom: 1px solid #ffffff;
+  }
+  
+  .data-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .data-table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+  
+  .data-table tr:hover {
+    background-color: #f1f1f1; /* Warna latar belakang saat hover */
+  }
+  
+  .data-table td {
+    color: #555;
+    line-height: 1.2; /* Mengurangi jarak vertikal antar baris */
+  }
+  
+  .data-table .koin {
+    font-weight: bold;
+  }
+  
+  
+  /* Warna latar belakang pada teks keterangan */
+  .keterangan {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+  }
+  
+  
+  /* CSS untuk shift Siang dan Malam */
+  .siang, .malam {
+    display: inline-block;
+    padding: 3px 10px;  /* Memberikan padding agar latar belakang tidak mepet dengan teks */
+    border-radius: 3px; /* Membuat sudut sedikit melengkung */
+  }
+  
+  .siang {
+    background-color: #ffedd2; /* Warna latar belakang siang */
+    color: #c57600;
+  }
+  
+  .malam {
+    background-color: #cfd6ff; /* Warna latar belakang malam */
+    color: #001cbc;
+  }
+  
+  /* CSS untuk Keterangan Masuk dan Pulang */
+  .masuk, .pulang {
+    display: inline-block;
+    padding: 3px 10px;  /* Memberikan padding agar latar belakang tidak mepet dengan teks */
+    border-radius: 3px; /* Membuat sudut sedikit melengkung */
+  }
+  
+  .masuk {
+ /* Warna latar belakang hijau muda untuk "Masuk" */
+    color: #005d16;
+  }
+  
+  .pulang {
+    background-color: #ffd0d5; /* Warna latar belakang merah muda untuk "Pulang" */
+    color: #b10012;
+  }
+  
+  .keterangan-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Jarak antara teks dan tombol */
+  }
+  
+  .keterangan-container .btn-action {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .keterangan-container .btn-action:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-action {
+    padding: 6px 1px;
+    font-size: 12px;   /* Ukuran font lebih kecil */
+    width: 80px ;       /* Mengatur lebar tombol secara eksplisit */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-action:hover {
+    background-color: #0056b3;
+  }
+  .data-table .nama, 
+.data-table .jenis-game, 
+.data-table .shift, 
+.data-table .keterangan {
+  font-weight: bold;
+}
+
+  /* Styling untuk kolom Jenis Game */
+  .LA, .TNL {
+    display: inline-block;
+    padding: 3px 10px;  /* Memberikan padding agar latar belakang tidak mepet dengan teks */
+    border-radius: 3px; /* Membuat sudut sedikit melengkung */
+  }
+  
+  .LA {
+    background-color: #039aff43; /* Warna latar belakang masuk */
+    color: #002aff;
+  }
+  
+  .TNL {
+    background-color: #ffd0d5; /* Warna latar belakang pulang */
+    color: #b10012;
+  }
+  .filter-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-container input,
+  .filter-container select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    gap: 10px;
+    border-radius: 4px;
+  }
+  
+  .btn-filter {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px; /* Jarak antar tombol */
+  }
+  
+  .btn-filter:hover {
+    background-color: #ffffff;
+  }
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filter-left,
+  .filter-right {
+    gap: 10px;
+  }
+  
+  .filter-input {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .filter-input.kecil {
+    width: 120px;
+  }
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-left {
+    display: flex;
+    gap: 10px; /* Mengatur jarak antar elemen select */
+  }
+  
+  .filter-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Memberikan jarak antara tombol dan input */
+  }
+  
+  .filter-input {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+  .kecil {
+    width: 120px;
+  }
+  
+  .btn-add {
+    padding: 10px 20px; /* Mengatur padding untuk tombol, lebar dan tinggi */
+    width: 150px; /* Mengatur lebar tombol */
+    height: 35px; /* Mengatur tinggi tombol */
+    font-size: 12px; /* Ukuran font */
+    background-color: #007bff; /* Warna latar belakang tombol */
+    color: white; /* Warna teks tombol */
+    border: none; /* Menghilangkan border */
+    cursor: pointer; /* Mengubah kursor saat hover */
+    border-radius: 5px; /* Sudut melengkung */
+    transition: background-color 0.3s ease; /* Efek transisi saat hover */
+  }
+  
+  
+  .btn-add:hover {
+    background-color: #007bff;
+  }
+  /* Posisi notifikasi */
+  .notif {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 5px 10px; /* Disesuaikan agar lebih kecil */
+    border-radius: 5px;
+    font-size: 14px; /* Font lebih kecil */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan */
+    transition: opacity 1s ease-out;
+  }
+  
+  /* Warna berdasarkan tipe notifikasi */
+  .notif-success {
+    background-color: #4CAF50; /* Hijau untuk notifikasi sukses */
+  }
+  
+  .notif-error {
+    background-color: #f44336; /* Merah untuk notifikasi error */
+  }
+  

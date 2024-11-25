@@ -1,0 +1,56 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Jarak antar card */
+  }
+  
+  .card {
+    width: 30%; /* Set lebar card, bisa diatur sesuai keinginan */
+    border: 1px solid #efefef; /* Garis tepi hijau */
+    border-radius: 8px; /* Sudut melengkung */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa; /* Latar belakang cerah */
+  }
+  
+  .card-body h1 {
+    font-size: 3rem; /* Ukuran angka besar */
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .card-body p {
+    font-size: 1.2rem;
+    color: #777;
+  }
+  
+  .card-body span {
+    font-size: 2rem; /* Ukuran simbol koin */
+    margin-top: 10px;
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  
+  /* Kelas untuk warna latar belakang berbeda */
+  .card.green {
+    background-color: #d4edda; /* Hijau */
+  }
+  
+  .card.blue {
+    background-color: #cce5ff; /* Biru */
+  }
+  
+  .card.orange {
+    background-color: #ffe5b4; /* Oranye */
+  }
+  

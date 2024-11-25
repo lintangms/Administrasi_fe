@@ -1,0 +1,266 @@
+/* Riwayat.css */
+.riwayat-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  margin-top: -60px;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 10px; /* Menurunkan margin bawah agar lebih dekat dengan tabel */
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.loading, .error {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #d9534f; /* Warna merah untuk error */
+}
+
+.riwayat-table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Menambahkan shadow pada tabel */
+  border-radius: 5px; /* Membuat sudut tabel sedikit melengkung */
+  overflow: hidden; /* Memastikan shadow hanya keluar dari batas tabel */
+  margin-top: 0; /* Mempersempit jarak antara tabel dan bagian atas */
+}
+
+.riwayat-table th, .riwayat-table td {
+  padding: 6px 8px; /* Mengurangi padding agar jarak antar baris lebih kecil */
+  text-align: left;
+  border-bottom: 1px solid #ffffff;
+}
+
+.riwayat-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  color: #333;
+}
+
+.riwayat-table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.riwayat-table tr:hover {
+  background-color: #f1f1f1; /* Warna latar belakang saat hover */
+}
+
+.riwayat-table td {
+  color: #555;
+  line-height: 1.2; /* Mengurangi jarak vertikal antar baris */
+}
+
+.riwayat-table .jumlah-awal, 
+.riwayat-table .jumlah-dijual, 
+.riwayat-table .jumlah-sisa {
+  font-weight: bold; /* Mempertebal font */
+}
+
+/* Warna latar belakang pada teks keterangan */
+.keterangan {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+/* CSS untuk shift Siang dan Malam */
+.siang, .malam {
+  display: inline-block;
+  padding: 3px 10px;  /* Memberikan padding agar latar belakang tidak mepet dengan teks */
+  border-radius: 3px; /* Membuat sudut sedikit melengkung */
+}
+
+.siang {
+  background-color: #ffedd2; /* Warna latar belakang siang */
+  color: #c57600;
+}
+
+.malam {
+  background-color: #cfd6ff; /* Warna latar belakang malam */
+  color: #001cbc;
+}
+
+/* CSS untuk Keterangan Masuk dan Pulang */
+.masuk, .pulang {
+  display: inline-block;
+  padding: 3px 10px;  /* Memberikan padding agar latar belakang tidak mepet dengan teks */
+  border-radius: 3px; /* Membuat sudut sedikit melengkung */
+}
+
+.masuk {
+  background-color: #cbffd7; /* Warna latar belakang masuk */
+  color: #005d16;
+}
+
+.pulang {
+  background-color: #ffd0d5; /* Warna latar belakang pulang */
+  color: #b10012;
+}
+
+.keterangan-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Jarak antara teks dan tombol */
+}
+
+.keterangan-container .btn-action {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.keterangan-container .btn-action:hover {
+  background-color: #0056b3;
+}
+
+.btn-action {
+  padding: 6px 1px;
+  font-size: 12px;   /* Ukuran font lebih kecil */
+  width: 80px ;       /* Mengatur lebar tombol secara eksplisit */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-action:hover {
+  background-color: #0056b3;
+}
+
+.floating-modal {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color:#e04a02;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Warna latar belakang semi-transparan */
+  display: flex;
+  justify-content: center; /* Atur horizontal ke tengah */
+  align-items: center; /* Atur vertikal ke tengah */
+  z-index: 1050;
+}
+
+/* Modal Dialog */
+.modal-dialog {
+  max-width: 500px;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transform: translate(-50%, -50%); /* Memastikan posisi modal di tengah */
+  position: fixed;
+  top: 50%; /* Posisikan 50% dari atas */
+  left: 50%; /* Posisikan 50% dari kiri */
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end; /* Atur tombol di sisi kanan */
+  gap: 10px;
+  padding-top: 10px;
+}
+
+
+.notification {
+  background-color: #4caf50; /* Hijau untuk sukses */
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  animation: fadeIn 0.5s, fadeOut 0.5s 2.5s;
+}
+
+.notification.error {
+  background-color: #f44336; /* Merah untuk error */
+}
+
+.notifikasi {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.notifikasi.error {
+  background-color: #f44336;
+}
+
+.notifikasi.success {
+  background-color: #4caf50;
+}
+
+/* Styling untuk kolom Jenis Game */
+/* Riwayat.css */
+.jenis-game.la, .jenis-game.tnl {
+  background-color: #0040ff; /* Light blue background */
+  color: #ffffff; /* Dark blue text */
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.jenis-game.tnl {
+  background-color: #ff0026; /* Light pink background */
+  color: #ffffff; /* White text */
+}
+
+@media (max-width: 768px) {
+  .riwayat-table {
+    font-size: 12px;
+  }
+  .modal-dialog {
+    max-width: 90%;
+  }
+}

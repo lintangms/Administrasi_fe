@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Mengatur font global untuk seluruh aplikasi */
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px; /* Opsional: mengatur ukuran font default */
+  line-height: 1.5; /* Opsional: mengatur jarak antar baris */
+  color: #333; /* Opsional: mengatur warna teks default */
+}
+
+/* Contoh: Bold untuk elemen tertentu */
+h1, h2, h3, th {
+  font-weight: 700; /* Bold */
+}
+
+p, td, span {
+  font-weight: 400; /* Normal */
+}

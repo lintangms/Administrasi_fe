@@ -1,0 +1,151 @@
+/* Kasbon.css */
+
+/* Kontainer utama untuk halaman kasbon */
+.kasbon-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Ubah dari 'center' ke 'flex-start' untuk menyesuaikan dengan bagian atas */
+  height: 100vh;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  padding-top: 20px; /* Menambahkan sedikit ruang di atas */
+}
+
+/* Bagian form di kanan */
+.form-right {
+  width: 50%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Menambahkan sedikit ruang di atas card */
+}
+
+/* Judul form */
+.form-right h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px; /* Kurangi jarak bawah judul agar lebih rapat */
+}
+
+/* Group input form */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Label input */
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Input text field */
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+/* Group radio button */
+.radio-group-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.radio-option input {
+  margin-right: 10px;
+}
+
+/* Tampilkan pilihan yang dipilih */
+.radio-option.selected {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.radio-group-vertical label {
+  cursor: pointer;
+}
+
+/* Tombol kirim */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Notifikasi */
+.notification {
+  position: fixed; /* Ganti dari absolute menjadi fixed */
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.notification.success {
+  background-color: #28a745;
+}
+
+.notification.error {
+  background-color: #dc3545;
+}
+
+.notification {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Responsif untuk perangkat kecil */
+@media (max-width: 768px) {
+  .kasbon-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 20px; /* Menambahkan sedikit ruang pada perangkat kecil */
+  }
+
+  .image-left {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+  }
+
+  .form-right {
+      width: 100%;
+      padding: 15px;
+  }
+}

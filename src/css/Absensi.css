@@ -1,0 +1,134 @@
+/* Container untuk seluruh halaman */
+.absensi-container {
+    display: flex;  /* Menggunakan flexbox agar elemen bisa disusun secara vertikal */
+    justify-content: center;  /* Menempatkan form di tengah */
+    align-items: center;  /* Menjaga form agar tetap vertikal di tengah */
+    min-height: 100vh;  /* Membuat container mengambil seluruh tinggi layar */
+    padding: 20px;
+    margin-top: -70px;
+  }
+  
+  /* Form di tengah */
+  .form-right {
+    width: 100%;
+    max-width: 700px;  /* Batas lebar form */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling untuk form */
+  .form-group {
+    margin-bottom: 15px;
+    padding-left: 10px;  /* Memberikan jarak ke sisi kiri */
+    padding-right: 10px; /* Memberikan jarak ke sisi kanan */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;  /* Ukuran padding disesuaikan agar sama dengan tombol */
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;  /* Ukuran font disamakan dengan tombol */
+    box-sizing: border-box;  /* Agar padding tidak mengubah ukuran lebar input */
+  }
+  
+  /* Menambahkan shadow pada select */
+  .form-group select {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Menambahkan shadow pada select */
+  }
+  
+  /* Styling tombol kirim */
+  button {
+    width: 100%;  /* Membuat tombol selebar input */
+    padding: 10px;  /* Ukuran padding disesuaikan dengan input */
+    background-color: #e04a02;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #ad3700;
+  }
+  
+  /* Pesan error */
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .notification.success {
+    background-color: #4CAF50; /* Hijau untuk sukses */
+  }
+  
+  .notification.error {
+    background-color: #f44336; /* Merah untuk error */
+  }
+  
+  
+  .radio-group {
+    display: flex;
+    gap: 20px;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Menjaga teks tetap di tengah */
+    width: flex; /* Ukuran tetap untuk semua opsi */
+    height: 40px; /* Tinggi tetap untuk semua opsi */
+    padding: 10px; /* Jarak dalam */
+    border: 1px solid #ccc; /* Batas abu-abu */
+    border-radius: 5px; /* Membulatkan sudut */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan */
+    cursor: pointer; /* Pointer saat diarahkan */
+    font-size: 14px; /* Ukuran font */
+    font-weight: bold; /* Tebal */
+    transition: all 0.3s ease; /* Animasi transisi */
+    text-align: left; /* Teks di tengah */
+  }
+  
+  .radio-option.selected {
+    background-color: #007bff; /* Warna biru saat dipilih */
+    color: #fff; /* Teks putih */
+    border-color: #007bff; /* Batas biru */
+  }
+  
+  .radio-option input {
+    display: none; /* Sembunyikan input asli */
+  }
+  
+  .radio-option:focus-within,
+  .radio-option input:focus-visible {
+    outline: none; /* Hilangkan outline bawaan browser */
+  }
+  
+  /* Pastikan semua opsi memiliki ukuran tetap */
+  .radio-option,
+  .radio-option.selected {
+    flex-shrink: 0; /* Jangan mengecil */
+    box-sizing: border-box; /* Padding tidak memengaruhi ukuran elemen */
+  }
+  
