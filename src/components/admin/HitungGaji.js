@@ -8,26 +8,22 @@ const HitungGaji = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Fungsi untuk mengambil data dari API berdasarkan harga rata-rata
+  useEffect(() => {
+    fetchKaryawanData();
+  }, []);
+
   const fetchKaryawanData = async () => {
-    if (!hargaRataRata || isNaN(hargaRataRata)) {
-      alert('Masukkan harga rata-rata yang valid!');
-      return;
-    }
-  
     setLoading(true);
     try {
-      // Mengambil URL dari environment variable
       const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-  
+
       // Melakukan request GET untuk mengambil data gaji
       const response = await axios.get(`${BACKEND_URL}/transaksi/gaji`, {
-        params: { harga_rata_rata: hargaRataRata },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`, // Sesuaikan jika token digunakan
         },
       });
-  
+
       if (response.data.success && Array.isArray(response.data.data)) {
         setKaryawanList(response.data.data);
       } else {
@@ -41,14 +37,17 @@ const HitungGaji = () => {
       setLoading(false);
     }
   };
-  
 
-  // Fungsi untuk menangani perubahan input harga rata-rata
   const handleHargaChange = (e) => {
     setHargaRataRata(e.target.value);
   };
 
-  // Menampilkan loading atau error jika ada
+  const calculateTotalGaji = (karyawan) => {
+    const gajiTnl = (karyawan.tnl_koin || 0) * hargaRataRata * 0.5;
+    const gajiLa = (karyawan.la_koin || 0) * hargaRataRata * 0.5;
+    return gajiTnl + gajiLa;
+  };
+
   if (loading) return <p className="loading-text">Loading...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
@@ -66,7 +65,7 @@ const HitungGaji = () => {
           onChange={handleHargaChange}
           className="filter-input"
         />
-        <button className="btn-action" onClick={fetchKaryawanData}>
+        <button className="btn-action" onClick={() => {}}>
           Hitung Gaji
         </button>
       </div>
@@ -75,56 +74,50 @@ const HitungGaji = () => {
       <table className="data-table">
         <thead>
           <tr>
-            <th>No</th>
             <th>Nama Karyawan</th>
-            <th>Jenis Game</th>
-            <th>Total Koin</th>
-            <th>Gaji</th>
+            <th>Koin TNL</th>
+            <th>Koin LA</th>
+            <th>Gaji Koin TNL</th>
+            <th>Gaji Koin LA</th>
+            <th>Total Gaji</th>
           </tr>
         </thead>
         <tbody>
           {karyawanList && karyawanList.length > 0 ? (
             karyawanList.map((karyawan, index) => (
-              <React.Fragment key={karyawan.nama || index}>
-                {/* Baris Game TNL */}
-                <tr>
-                  <td>{index + 1}</td>
-                  <td>{karyawan.nama}</td>
-                  <td>TNL</td>
-                  <td>{karyawan.tnl_koin || 0}</td>
-                  <td>
-                    {hargaRataRata
-                      ? (
-                          (karyawan.tnl_koin || 0) * hargaRataRata * 0.5
-                        ).toLocaleString('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR',
-                        })
-                      : '-'}
-                  </td>
-                </tr>
-                {/* Baris Game LA */}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td>LA</td>
-                  <td>{karyawan.la_koin || 0}</td>
-                  <td>
-                    {hargaRataRata
-                      ? (
-                          (karyawan.la_koin || 0) * hargaRataRata * 0.5
-                        ).toLocaleString('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR',
-                        })
-                      : '-'}
-                  </td>
-                </tr>
-              </React.Fragment>
+              <tr key={karyawan.nama || index}>
+                <td>{karyawan.nama}</td>
+                <td>{karyawan.tnl_koin || 0}</td>
+                <td>{karyawan.la_koin || 0}</td>
+                <td>
+                  {hargaRataRata
+                    ? ((karyawan.tnl_koin || 0) * hargaRataRata * 0.5).toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                      })
+                    : '-'}
+                </td>
+                <td>
+                  {hargaRataRata
+                    ? ((karyawan.la_koin || 0) * hargaRataRata * 0.5).toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                      })
+                    : '-'}
+ </td>
+                <td>
+                  {hargaRataRata
+                    ? calculateTotalGaji(karyawan).toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                      })
+                    : '-'}
+                </td>
+              </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5">Tidak ada data karyawan tersedia</td>
+              <td colSpan="6">Tidak ada data karyawan tersedia</td>
             </tr>
           )}
         </tbody>

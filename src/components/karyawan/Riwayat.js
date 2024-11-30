@@ -9,9 +9,19 @@ const Riwayat = () => {
   const [selectedTransaksi, setSelectedTransaksi] = useState(null);
   const [jumlahDijual, setJumlahDijual] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showDetailModal, setShowDetailModal] = useState(false); // State for detail modal
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [notifikasi, setNotifikasi] = useState('');
   const [notifikasiStatus, setNotifikasiStatus] = useState('');
+
+  // State untuk filter dan pagination
+  const [filters, setFilters] = useState({
+    nama: '',
+    jenis: '',
+    tanggal: '',
+  });
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
 
   const idKaryawan = localStorage.getItem('id_karyawan');
   const token = localStorage.getItem('token');
@@ -30,9 +40,14 @@ const Riwayat = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: { ...filters, page, limit },
         });
-        console.log('Response Data:', response.data.data);
-        setTransaksiList(response.data.data);
+        
+        // Sort the transactions by id_transaksi in descending order
+        const sortedTransaksi = response.data.data.sort((a, b) => b.id_transaksi - a.id_transaksi);
+        
+        setTransaksiList(sortedTransaksi);
+        setTotal(response.data.total);
       } catch (err) {
         console.error('Error saat mengambil data transaksi:', err);
         setError('Gagal mengambil data transaksi');
@@ -40,10 +55,22 @@ const Riwayat = () => {
         setLoading(false);
       }
     };
-    
-
     fetchTransaksi();
-  }, [idKaryawan, token]);
+  }, [idKaryawan, token, filters, page, limit]);
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (e) => {
+    setLimit(Number(e.target.value));
+    setPage(1); // Reset ke halaman pertama saat limit berubah
+  };
 
   const handleButtonClick = (transaksi) => {
     setSelectedTransaksi(transaksi);
@@ -123,8 +150,7 @@ const Riwayat = () => {
     <div className="riwayat-container">
       <h2>Riwayat Transaksi</h2>
 
-      {loading && <p className="loading">Sedang memuat data...</p>}
-      {error && <p className="error">{error}</p>}
+
 
       {notifikasi && (
         <div className={`notifikasi ${notifikasiStatus}`}>
@@ -132,7 +158,7 @@ const Riwayat = () => {
         </div>
       )}
 
-      {!loading && !error && (
+      { (
         <table className="riwayat-table">
           <thead>
             <tr>
@@ -152,7 +178,7 @@ const Riwayat = () => {
             {transaksiList.length > 0 ? (
               transaksiList.map((transaksi, index) => (
                 <tr key={transaksi.id_transaksi}>
-                  <td>{index + 1}</td>
+                  <td>{(page - 1) * limit + index + 1}</td>
                   <td>{transaksi.akun_steam}</td>
                   <td style={{ display: 'none' }}>{transaksi.akun_gmail}</td>
                   <td>
@@ -174,38 +200,91 @@ const Riwayat = () => {
                     </span>
                   </td>
                   <td>
-                    <div style={{ whiteSpace: 'nowrap' }}>
-                      <button
+                  <button
                         className="btn-action"
                         onClick={() => handleButtonClick(transaksi)}
                         style={{ display: 'inline-block', marginRight: '5px' }}
                       >
                         Jual Koin
                       </button>
-                      <button
-                        className="btn-action"
-                        onClick={() => handleDetailClick(transaksi)}
-                        style={{ display: 'inline-block' }}
-                      >
-                        Detail
-                      </button>
-                    </div>
+                    <button
+                      className="btn-action"
+                      onClick={() => handleDetailClick(transaksi)}
+                    >
+                      Detail
+                    </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="10" style={{ textAlign: 'center' }}>
-                  Tidak ada transaksi yang ditemukan.
-                </td>
+                <td colSpan="10">Tidak ada transaksi tersedia</td>
               </tr>
             )}
           </tbody>
         </table>
       )}
 
-      {/* Modal Jual Koin */}
-      {showModal && (
+      {/* Pagination */}
+      <div className="pagination-container">
+        <div className="pagination-left">
+          <label>Jumlah Data:</label>
+          <select value={limit} onChange={handleLimitChange} className="small-select">
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={total}>Semua</option>
+          </select>
+        </div>
+        <div className="pagination-right">
+          {/* Tombol Previous */}
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            &lt;
+          </button>
+
+          {/* Pagination Numbers */}
+          {[...Array(Math.ceil(total / limit)).keys()].map((num) => {
+            const pageNumber = num + 1;
+            if (
+              pageNumber === 1 ||
+              pageNumber === Math.ceil(total / limit) ||
+              (pageNumber >= page - 2 && pageNumber <= page + 2)
+            ) {
+              return (
+                <button
+                  key={pageNumber}
+                  className={`pagination-btn ${page === pageNumber ? 'active' : ''}`}
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            } else if (
+              (pageNumber === page - 3 || pageNumber === page + 3) &&
+              (pageNumber !== 1 && pageNumber !== Math.ceil(total / limit))
+            ) {
+              return <span key={pageNumber}>...</span>;
+            }
+            return null;
+          })}
+
+          {/* Tombol Next */}
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === Math.ceil(total / limit)}
+          >
+            &gt;
+          </button>
+        </div>
+      </div>
+
+       {/* Modal Jual Koin */}
+       {showModal && (
         <div className="modal show" style={{ display: 'block' }}>
           <div className="modal-dialog">
             <div className="modal-content">

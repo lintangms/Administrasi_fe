@@ -78,19 +78,19 @@ nav ul li a i {
 
 /* Efek hover untuk menu item */
 nav ul li a:hover {
-  background-color: #e04a02;
+  background-color: #007bff;
   color: white;
 }
 
 /* Styling untuk menu yang aktif */
 nav ul li a.active {
-  background-color: #e04a02;
+  background-color: #007bff;
   color: white;
 }
 
 /* Styling untuk logout button */
 .logout button {
-  background-color: #e04a02;
+  background-color: #007bff;
   color: white;
   width: 90%;
   padding: 10px;
@@ -126,7 +126,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #e04a02;
+  background-color: #007bff;
   color: white;
   padding: 10px;
   z-index: 999;
@@ -139,7 +139,7 @@ header {
   background-color: #ffffff;
   border: none;
   border-radius: 50%;
-  color: #e04a02;
+  color: #007bff;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -151,7 +151,7 @@ header {
 }
 
 .toggle-btn:hover {
-  background-color: #e04a02;
+  background-color: #007bff;
   color: white;
 }
 

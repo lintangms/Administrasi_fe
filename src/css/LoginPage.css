@@ -65,7 +65,7 @@ input {
 button {
   width: 100%;  /* Agar button memiliki lebar yang sama dengan input */
   padding: 15px;
-  background-color: #ff9100;
+  background-color: #007bff;
   color: white;
   border: none;
   margin: 10px 0;

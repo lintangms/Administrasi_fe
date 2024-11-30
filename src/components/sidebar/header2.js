@@ -46,7 +46,7 @@ function Header2({ toggleSidebar, isSidebarCollapsed }) {
       <button className="toggle-btn" onClick={toggleSidebar}>
         <FontAwesomeIcon icon={faBars} /> {/* Menampilkan ikon bars */}
       </button>
-      <h1>Selamat Datang, {nama}</h1>
+      <h1>Selamat Datang</h1>
     </header>
   );
 }

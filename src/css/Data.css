@@ -136,10 +136,8 @@
   .btn-action:hover {
     background-color: #0056b3;
   }
-  .data-table .nama, 
-.data-table .jenis-game, 
-.data-table .shift, 
-.data-table .keterangan {
+  .data-table .nama
+ {
   font-weight: bold;
 }
 
@@ -159,81 +157,54 @@
     background-color: #ffd0d5; /* Warna latar belakang pulang */
     color: #b10012;
   }
-  .filter-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .filter-container input,
-  .filter-container select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    gap: 10px;
-    border-radius: 4px;
-  }
-  
-  .btn-filter {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px; /* Jarak antar tombol */
-  }
-  
-  .btn-filter:hover {
-    background-color: #ffffff;
-  }
-  .filter-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .filter-left,
-  .filter-right {
-    gap: 10px;
-  }
-  
-  .filter-input {
-    padding: 5px;
-    font-size: 14px;
-  }
-  
-  .filter-input.kecil {
-    width: 120px;
-  }
-  .filter-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .filter-left {
-    display: flex;
-    gap: 10px; /* Mengatur jarak antar elemen select */
-  }
-  
-  .filter-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .filter-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Memberikan jarak antara tombol dan input */
-  }
-  
-  .filter-input {
-    padding: 5px 10px;
-    font-size: 14px;
-  }
-  
+ /* Mengatur container filter */
+.filter-container {
+  display: flex;
+  justify-content: space-between; /* Membagi ruang antara bagian kiri dan kanan */
+  align-items: center; /* Menjaga agar elemen-elemen sejajar secara vertikal */
+  gap: 10px; /* Menambah jarak antar elemen */
+  margin-bottom: 20px;
+}
+
+/* Mengatur bagian kiri dan kanan pada filter */
+.filter-left,
+.filter-right {
+  display: flex;
+  gap: 10px; /* Menambahkan jarak antar elemen dalam filter-left dan filter-right */
+  align-items: center;
+}
+
+/* Pengaturan untuk elemen input dan select */
+.filter-input {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: auto; /* Menyesuaikan lebar input dengan konten */
+}
+
+/* Khusus untuk input yang lebih kecil (seperti tanggal dan select) */
+.filter-input.kecil {
+  width: 120px; /* Lebar lebih kecil untuk elemen select atau date */
+}
+
+/* Tombol filter */
+.btn-filter {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Efek hover untuk tombol filter */
+.btn-filter:hover {
+  background-color: #0056b3; /* Mengubah warna latar belakang tombol saat hover */
+  color: #fff; /* Menjaga warna teks tetap putih */
+}
+
   .kecil {
     width: 120px;
   }
@@ -280,5 +251,45 @@
   
   .notif-error {
     background-color: #f44336; /* Merah untuk notifikasi error */
+  }
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination-left label {
+    margin-right: 10px;
+  }
+  
+  .small-select {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .pagination-right {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .pagination-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color:#007bff;
+    cursor: pointer;
+  }
+  
+  .pagination-btn.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
   }
   

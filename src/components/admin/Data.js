@@ -9,25 +9,30 @@ const Data = () => {
   const [selectedTransaksi, setSelectedTransaksi] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
-  // State untuk filter
+  // State untuk filter dan pagination
   const [filters, setFilters] = useState({
     nama: '',
     jenis: '',
     tanggal: '',
   });
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const fetchFilteredTransaksi = async () => {
       setLoading(true);
+      setError(''); // Reset error setiap kali kita memulai fetch baru
       try {
         const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; // Ambil URL dari environment variable
         const response = await axios.get(`${BACKEND_URL}/transaksi/filter`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          params: filters, // Kirim parameter filter sesuai kebutuhan
+          params: { ...filters, page, limit },
         });
         setTransaksiList(response.data.data);
+        setTotal(response.data.total);
       } catch (err) {
         console.error('Gagal mengambil data transaksi:', err);
         setError('Gagal mengambil data transaksi.');
@@ -36,16 +41,13 @@ const Data = () => {
       }
     };
 
-    const debounceFetch = setTimeout(() => {
-      fetchFilteredTransaksi();
-    }, 300); // Debounce delay 300ms
-
-    return () => clearTimeout(debounceFetch);
-  }, [filters]);
+    fetchFilteredTransaksi();
+  }, [filters, page, limit]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+    setPage(1); // Reset ke halaman pertama saat filter berubah
   };
 
   const handleDetailClick = (transaksi) => {
@@ -53,8 +55,14 @@ const Data = () => {
     setShowDetailModal(true);
   };
 
-  if (loading) return <p className="loading-text">Loading...</p>;
-  if (error) return <p className="error-text">{error}</p>;
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (e) => {
+    setLimit(Number(e.target.value));
+    setPage(1); // Reset ke halaman pertama saat limit berubah
+  };
 
   return (
     <div className="data-container">
@@ -68,13 +76,13 @@ const Data = () => {
             name="tanggal"
             value={filters.tanggal}
             onChange={handleFilterChange}
-            className="filter-input kecil"
+            className="filter-input"
           />
           <select
             name="jenis"
             value={filters.jenis}
             onChange={handleFilterChange}
-            className="filter-input kecil"
+            className="filter-input"
           >
             <option value="">Semua Jenis</option>
             <option value="LA">LA</option>
@@ -92,6 +100,12 @@ const Data = () => {
           />
         </div>
       </div>
+
+      {/* Error Message */}
+      {error && <div className="error-message">{error}</div>}
+
+      {/* Loading Indicator */}
+      {loading && <div className="loading-message">Loading...</div>}
 
       <table className="data-table">
         <thead>
@@ -112,7 +126,7 @@ const Data = () => {
           {transaksiList.length > 0 ? (
             transaksiList.map((transaksi, index) => (
               <tr key={transaksi.id_transaksi}>
-                <td>{index + 1}</td>
+                <td>{(page - 1) * limit + index + 1}</td>
                 <td className="nama">{transaksi.nama}</td>
                 <td>
                   <span className={`jenis-game ${transaksi.jenis.toLowerCase()} jenis`}>
@@ -149,11 +163,69 @@ const Data = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="12">Tidak ada transaksi tersedia</td>
+              <td colSpan="10">Tidak ada transaksi tersedia</td>
             </tr>
           )}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <div className="pagination-container">
+        <div className="pagination-left">
+          <label>Jumlah Data:</label>
+          <select value={limit} onChange={handleLimitChange} className="small-select">
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={total}>Semua</option>
+          </select>
+        </div>
+        <div className="pagination-right">
+          {/* Tombol Previous */}
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            &lt;
+          </button>
+
+          {/* Pagination Numbers */}
+          {[...Array(Math.ceil(total / limit)).keys()].map((num) => {
+            const pageNumber = num + 1;
+            if (
+              pageNumber === 1 ||
+              pageNumber === Math.ceil(total / limit) ||
+              (pageNumber >= page - 2 && pageNumber <= page + 2)
+            ) {
+              return (
+                <button
+                  key={pageNumber}
+                  className={`pagination-btn ${page === pageNumber ? 'active' : ''}`}
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              );
+            } else if (
+              (pageNumber === page - 3 || pageNumber === page + 3) &&
+              (pageNumber !== 1 && pageNumber !== Math.ceil(total / limit))
+            ) {
+              return <span key={pageNumber}>...</span>;
+            }
+            return null;
+          })}
+
+          {/* Tombol Next */}
+          <button
+            className="pagination-btn"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === Math.ceil(total / limit)}
+          >
+            &gt;
+          </button>
+        </div>
+      </div>
 
       {showDetailModal && (
         <div className="modal" id="detailTransaksiModal">

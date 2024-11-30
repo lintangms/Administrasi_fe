@@ -29,7 +29,7 @@ function KaryawanDashboard() {
         setLoading(false);
       } catch (err) {
         console.error('Error fetching koin data:', err);
-        setError('Failed to fetch koin data');
+        setError('Tidak ada data');
         setLoading(false);
       }
     };
@@ -56,7 +56,7 @@ function KaryawanDashboard() {
       {
         label: 'Total Koin TNL',
         data: koinData.map(item => parseInt(item.tnl_koin, 10)),
-        backgroundColor: '#4CAF50', // Warna solid hijau
+        backgroundColor: '#007bff', // Warna solid hijau
         borderRadius: 10, // Membuat ujung atas batang melengkung
         barThickness: 30, // Ukuran lebar batang
       },

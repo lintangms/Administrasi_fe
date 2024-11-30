@@ -3,7 +3,7 @@
     padding: 20px;
     max-width: 800px;
     margin: 20px auto;
-    background-color: #f9f9f9; /* Latar belakang dashboard */
+    background-color: #ffffff; /* Latar belakang dashboard */
     border: 1px solid #e0e0e0; /* Border tipis */
     border-radius: 10px; /* Membuat sudut melengkung */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow ringan */
@@ -50,5 +50,51 @@
     color: #007bff; /* Warna biru untuk teks loading */
     font-size: 18px;
     font-weight: bold;
+  }
+  .dashboard-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  
+  .stat-card {
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 24%;
+    margin: 10px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .stat-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+  
+  .dashboard-chart {
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
   }
   
