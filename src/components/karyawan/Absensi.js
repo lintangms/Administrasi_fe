@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../css/Absensi.css'; // Pastikan file CSS ini tersedia
+import '../../css/Absensi.css';
 
 const Absensi = () => {
   const [akunSteam, setAkunSteam] = useState('');
@@ -22,32 +22,32 @@ const Absensi = () => {
       setNotif({ message: 'ID karyawan tidak ditemukan. Harap login terlebih dahulu.', type: 'error' });
     }
   }, []);
-  
+
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     if (!akunSteam || !akunGmail || !shift || !jumlahKoin || !keterangan || !jenis || !idKaryawan) {
       setNotif({ message: 'Semua field wajib diisi!', type: 'error' });
       setLoading(false);
       return;
     }
-  
+
     const absensiData = {
       akun_steam: akunSteam,
       akun_gmail: akunGmail,
       shift,
-      jumlah_awal_koin: jumlahKoin,
+      jumlah_awal: jumlahKoin,
       kode_akun: kodeAkun || null,
       keterangan,
       jenis,
     };
-  
+
     try {
       const response = await axios.post(`${BACKEND_URL}/api/transaksi/akun/${idKaryawan}`, absensiData);
-  
+
       if (response.data.success) {
         setNotif({ message: 'Absensi berhasil dicatat!', type: 'success' });
         setAkunSteam('');
@@ -70,7 +70,7 @@ const Absensi = () => {
       }, 2000);
     }
   };
-  
+
   return (
     <div className="absensi-container">
       <div className="image-left"></div>
@@ -83,7 +83,7 @@ const Absensi = () => {
             <label htmlFor="akunSteam">Akun Steam</label>
             <input
               type="text"
-              id="akunSteam"
+              id="akun_steam"
               value={akunSteam}
               onChange={(e) => setAkunSteam(e.target.value)}
               required
@@ -93,8 +93,8 @@ const Absensi = () => {
           <div className="form-group">
             <label htmlFor="akunGmail">Akun Gmail</label>
             <input
-              type="email"
-              id="akunGmail"
+              type="text"
+              id="akun_gmail"
               value={akunGmail}
               onChange={(e) => setAkunGmail(e.target.value)}
               required
@@ -113,83 +113,82 @@ const Absensi = () => {
           </div>
 
           <div className="form-group">
-  <label>Shift</label>
-  <div className="radio-group-vertical">
-    <label className={`radio-option ${shift === 'siang' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="shift"
-        value="siang"
-        onChange={(e) => setShift(e.target.value)}
-        checked={shift === 'siang'}
-      />
-      Siang
-    </label>
-    <label className={`radio-option ${shift === 'malam' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="shift"
-        value="malam"
-        onChange={(e) => setShift(e.target.value)}
-        checked={shift === 'malam'}
-      />
-      Malam
-    </label>
-  </div>
-</div>
+            <label>Shift</label>
+            <div className="radio-group-vertical">
+              <label className={`radio-option ${shift === 'siang' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="shift"
+                  value="siang"
+                  onChange={(e) => setShift(e.target.value)}
+                  checked={shift === 'siang'}
+                />
+                Siang
+              </label>
+              <label className={`radio-option ${shift === 'malam' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="shift"
+                  value="malam"
+                  onChange={(e) => setShift(e.target.value)}
+                  checked={shift === 'malam'}
+                />
+                Malam
+              </label>
+            </div>
+          </div>
 
-<div className="form-group">
-  <label>Keterangan</label>
-  <div className="radio-group-vertical">
-    <label className={`radio-option ${keterangan === 'masuk' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="keterangan"
-        value="masuk"
-        onChange={(e) => setKeterangan(e.target.value)}
-        checked={keterangan === 'masuk'}
-      />
-      Masuk
-    </label>
-    <label className={`radio-option ${keterangan === 'pulang' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="keterangan"
-        value="pulang"
-        onChange={(e) => setKeterangan(e.target.value)}
-        checked={keterangan === 'pulang'}
-      />
-      Pulang
-    </label>
-  </div>
-</div>
+          <div className="form-group">
+            <label>Keterangan</label>
+            <div className="radio-group-vertical">
+              <label className={`radio-option ${keterangan === 'masuk' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="keterangan"
+                  value="masuk"
+                  onChange={(e) => setKeterangan(e.target.value)}
+                  checked={keterangan === 'masuk'}
+                />
+                Masuk
+              </label>
+              <label className={`radio-option ${keterangan === 'pulang' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="keterangan"
+                  value="pulang"
+                  onChange={(e) => setKeterangan(e.target.value)}
+                  checked={keterangan === 'pulang'}
+                />
+                Pulang
+              </label>
+            </div>
+          </div>
 
-<div className="form-group">
-  <label>Jenis Game</label>
-  <div className="radio-group-vertical">
-    <label className={`radio-option ${jenis === 'LA' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="jenis"
-        value="LA"
-        onChange={(e) => setJenis(e.target.value)}
-        checked={jenis === 'LA'}
-      />
-      Lost Ark (LA)
-    </label>
-    <label className={`radio-option ${jenis === 'TNL' ? 'selected' : ''}`}>
-      <input
-        type="radio"
-        name="jenis"
-        value="TNL"
-        onChange={(e) => setJenis(e.target.value)}
-        checked={jenis === 'TNL'}
-      />
-      Throne and Liberty (TNL)
-    </label>
-  </div>
-</div>
-
+          <div className="form-group">
+            <label>Jenis Game</label>
+            <div className="radio-group-vertical">
+              <label className={`radio-option ${jenis === 'LA' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="jenis"
+                  value="LA"
+                  onChange={(e) => setJenis(e.target.value)}
+                  checked={jenis === 'LA'}
+                />
+                Lost Ark (LA)
+              </label>
+              <label className={`radio-option ${jenis === 'TNL' ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="jenis"
+                  value="TNL"
+                  onChange={(e) => setJenis(e.target.value)}
+                  checked={jenis === 'TNL'}
+                />
+                Throne and Liberty (TNL)
+              </label>
+            </div>
+          </div>
 
           <button type="submit" disabled={loading}>
             {loading ? 'Loading...' : 'Kirim Absensi'}
