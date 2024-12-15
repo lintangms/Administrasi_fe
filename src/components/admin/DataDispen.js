@@ -2,53 +2,53 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../css/Data.css'; // Make sure this CSS file is correctly linked
 
-const DataKasbon = () => {
-  const [kasbonList, setKasbonList] = useState([]);
+const DataDispensasi = () => {
+  const [dispensasiList, setDispensasiList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [selectedKasbon, setSelectedKasbon] = useState(null);
+  const [selectedDispensasi, setSelectedDispensasi] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [newStatus, setNewStatus] = useState('');
 
   // State untuk filter dan pagination
   const [filters, setFilters] = useState({
-    nama: '',
-    tanggal: '',
-    cicilan: '',
+    keperluan: '',
+    hari: '',
+    status: '',
   });
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const fetchFilteredKasbon = async () => {
+    const fetchFilteredDispensasi = async () => {
       setLoading(true);
       try {
         const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; // Ambil URL dari environment variable
-        const response = await axios.get(`${BACKEND_URL}/api/allkasbon`, {
+        const response = await axios.get(`${BACKEND_URL}/api/alldispen`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
           params: { ...filters, page, limit },
         });
 
-        if (response.data && response.data.kasbons) {
-          setKasbonList(response.data.kasbons);
-          setTotal(response.data.total); // Assuming the total count of kasbons is available in response.data.total
+        if (response.data && response.data.dispensasis) {
+          setDispensasiList(response.data.dispensasis);
+          setTotal(response.data.total); // Assuming the total count of dispensasi is available in response.data.total
         } else {
-          setKasbonList([]);
+          setDispensasiList([]);
         }
       } catch (err) {
-        console.error('Gagal mengambil data kasbon:', err);
-        setError('Gagal mengambil data kasbon.');
+        console.error('Gagal mengambil data dispensasi:', err);
+        setError('Gagal mengambil data dispensasi.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFilteredKasbon();
+    fetchFilteredDispensasi();
   }, [filters, page, limit]);
 
   const handleFilterChange = (e) => {
@@ -56,21 +56,21 @@ const DataKasbon = () => {
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
 
-  const handleDetailClick = (kasbon) => {
-    setSelectedKasbon(kasbon);
+  const handleDetailClick = (dispensasi) => {
+    setSelectedDispensasi(dispensasi);
     setShowDetailModal(true);
   };
 
-  const handleUpdateClick = (kasbon) => {
-    setSelectedKasbon(kasbon);
-    setNewStatus(kasbon.status); // Set current status for editing
+  const handleUpdateClick = (dispensasi) => {
+    setSelectedDispensasi(dispensasi);
+    setNewStatus(dispensasi.status); // Set current status for editing
     setShowUpdateModal(true);
   };
 
   const handleUpdateStatus = async () => {
     try {
       const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; // Ambil URL dari environment variable
-      await axios.put(`${BACKEND_URL}/api/updatekasbon/${selectedKasbon.id_kasbon}`, {
+      await axios.put(`${BACKEND_URL}/api/updatedispen/${selectedDispensasi.id_dispensasi}`, {
         status: newStatus,
       }, {
         headers: {
@@ -78,14 +78,14 @@ const DataKasbon = () => {
         },
       });
       setShowUpdateModal(false);
-      setSuccessMessage('Status kasbon berhasil diperbarui.');
+      setSuccessMessage('Status dispensasi berhasil diperbarui.');
       setError(''); // Clear any previous error messages
       setTimeout(() => setSuccessMessage(''), 2000); // Clear success message after 2 seconds
       // Refresh data after updating
       setFilters({ ...filters }); // Trigger useEffect to fetch updated data
     } catch (err) {
-      console.error('Gagal memperbarui status kasbon:', err);
-      setError('Gagal memperbarui status kasbon.');
+      console.error('Gagal memperbarui status dispensasi:', err);
+      setError('Gagal memperbarui status dispensasi.');
       setSuccessMessage(''); // Clear any previous success messages
       setTimeout(() => setError(''), 2000); // Clear error after 2 seconds
     }
@@ -102,77 +102,81 @@ const DataKasbon = () => {
 
   return (
     <div className="data-container">
-      <h2>Data Kasbon</h2>
-      
+      <h2>Data Dispensasi</h2>
 
-      {/* Form Filter */}
+      {/* Notification Messages */}
+      {successMessage && <div className="notification success">{successMessage}</div>}
+      {error && <div className="notification error">{error}</div> }
+
+      {/* Form Filter
       <div className="filter-container">
         <div className="filter-left">
+          <input
+            type="text"
+            name="keperluan"
+            placeholder="Cari Keperluan"
+            value={filters.keperluan}
+            onChange={handleFilterChange}
+            className="filter-input"
+          />
           <select
-            name="cicilan"
-            value={filters.cicilan}
+            name="hari"
+            value={filters.hari}
             onChange={handleFilterChange}
             className="filter-input"
           >
-            <option value="">Semua Cicilan</option> 
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option value="">Semua Hari</option>
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+            <option value="Sabtu">Sabtu</option>
+            <option value="Minggu">Minggu</option>
           </select>
-          <input
-            type="date"
-            name="tanggal"
-            value={filters.tanggal}
-            onChange={handleFilterChange}
-            className="filter-input kecil"
-          />
-        </div>
-        <div className="filter-right">
-          <input
-            type="text"
-            name="nama"
-            placeholder="Cari Nama Karyawan"
-            value={filters.nama}
+          <select
+            name="status"
+            value={filters.status}
             onChange={handleFilterChange}
             className="filter-input"
-          />
+          >
+            <option value="">Semua Status</option>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
         </div>
-      </div>
+      </div> */}
 
       <table className="data-table">
         <thead>
           <tr>
             <th>No</th>
-            <th>Nama Karyawan</th>
             <th>Keperluan</th>
-            <th>Nominal</th>
-            <th>Cicilan</th>
-            <th>Tanggal</th>
+            <th>Hari</th>
             <th>Status</th>
+            <th>Tanggal</th>
             <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
-          {kasbonList.length > 0 ? (
-            kasbonList.map((kasbon, index) => (
-              <tr key={kasbon.id_kasbon}>
+          {dispensasiList.length > 0 ? (
+            dispensasiList.map((dispensasi, index) => (
+              <tr key={dispensasi.id_dispensasi}>
                 <td>{(page - 1) * limit + index + 1}</td>
-                <td>{kasbon.nama}</td>
-                <td>{kasbon.keperluan}</td>
-                <td>{kasbon.nominal}</td>
-                <td>{kasbon.cicilan}</td>
-                <td>{new Date(kasbon.tanggal).toLocaleString()}</td>
-                <td>{kasbon.status}</td>
+                <td>{dispensasi.keperluan}</td>
+                <td>{dispensasi.hari}</td>
+                <td>{dispensasi.status}</td>
+                <td>{new Date(dispensasi.tanggal).toLocaleDateString('id-ID')}</td>
                 <td>
                   <button
                     className="btn-action"
-                    onClick={() => handleDetailClick(kasbon)}
+                    onClick={() => handleDetailClick(dispensasi)}
                   >
                     Detail
                   </button>
                   <button
                     className="btn-action"
-                    onClick={() => handleUpdateClick(kasbon)}
+                    onClick={() => handleUpdateClick(dispensasi)}
                   >
                     Update
                   </button>
@@ -181,7 +185,7 @@ const DataKasbon = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="8">Tidak ada data kasbon tersedia</td>
+              <td colSpan="5">Tidak ada data dispensasi tersedia</td>
             </tr>
           )}
         </tbody>
@@ -199,7 +203,6 @@ const DataKasbon = () => {
           </select>
         </div>
         <div className="pagination-right">
-          {/* Tombol Previous */}
           <button
             className="pagination-btn"
             onClick={() => handlePageChange(page - 1)}
@@ -208,33 +211,19 @@ const DataKasbon = () => {
             &lt;
           </button>
 
-          {/* Pagination Numbers */}
           {[...Array(Math.ceil(total / limit)).keys()].map((num) => {
             const pageNumber = num + 1;
-            if (
-              pageNumber === 1 ||
-              pageNumber === Math.ceil(total / limit) ||
-              (pageNumber >= page - 2 && pageNumber <= page + 2)
-            ) {
-              return (
-                <button
-                  key={pageNumber}
-                  className={`pagination-btn ${page === pageNumber ? 'active' : ''}`}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              );
-            } else if (
-              (pageNumber === page - 3 || pageNumber === page + 3) &&
-              (pageNumber !== 1 && pageNumber !== Math.ceil(total / limit))
-            ) {
-              return <span key={pageNumber}>...</span>;
-            }
-            return null;
+            return (
+              <button
+                key={pageNumber}
+                className={`pagination-btn ${page === pageNumber ? 'active' : ''}`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            );
           })}
 
-          {/* Tombol Next */}
           <button
             className="pagination-btn"
             onClick={() => handlePageChange(page + 1)}
@@ -246,19 +235,17 @@ const DataKasbon = () => {
       </div>
 
       {showDetailModal && (
-        <div className="modal" id="detailKasbonModal">
+        <div className="modal" id="detailDispensasiModal">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Detail Kasbon</h5>
+                <h5 className="modal-title">Detail Dispensasi</h5>
               </div>
               <div className="modal-body">
-                <p><strong>Nama Karyawan:</strong> {selectedKasbon?.nama}</p>
-                <p><strong>Keperluan:</strong> {selectedKasbon?.keperluan}</p>
-                <p><strong>Nominal:</strong> {selectedKasbon?.nominal}</p>
-                <p><strong>Cicilan:</strong> {selectedKasbon?.cicilan}</p>
-                <p><strong>Tanggal:</strong> {new Date(selectedKasbon?.tanggal).toLocaleString()}</p>
-                <p><strong>Status:</strong> {selectedKasbon?.status}</p>
+                <p><strong>Keperluan:</strong> {selectedDispensasi?.keperluan}</p>
+                <p><strong>Hari:</strong> {selectedDispensasi?.hari}</p>
+                <p><strong>Status:</strong> {selectedDispensasi?.status}</p>
+                <p><strong>Tanggal:</strong>{new Date(selectedDispensasi.tanggal).toLocaleDateString('id-ID')}</p>
               </div>
               <div className="modal-footer">
                 <button
@@ -275,24 +262,24 @@ const DataKasbon = () => {
       )}
 
       {showUpdateModal && (
-        <div className="modal" id="updateKasbonModal">
+        <div className="modal" id="updateDispensasiModal">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Update Status Kasbon</h5>
+                <h5 className="modal-title">Update Status Dispensasi</h5>
               </div>
               <div className="form-group">
-              <label>Status Baru</label>
-            <select
-              name="status"
-              value={newStatus}
-              onChange={(e) => setNewStatus(e.target.value)}
-              className="form-control"
-            >
-              <option value="">Pilih Status</option>
-              <option value="lunas">Lunas</option>
-              <option value="belum_lunas">Belum Lunas</option>
-            </select>
+                <label>Status Baru</label>
+                <select
+                  name="status"
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                  className="form-control"
+                >
+                  <option value="">Pilih Status</option>
+                  <option value="disetujui">Setujui</option>
+                  <option value="ditolak">Tolak</option>
+                </select>
               </div>
               <div className="modal-footer">
                 <button
@@ -318,4 +305,4 @@ const DataKasbon = () => {
   );
 };
 
-export default DataKasbon;
+export default DataDispensasi;

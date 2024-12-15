@@ -18,7 +18,7 @@ const HitungGaji = () => {
       const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
       // Melakukan request GET untuk mengambil data gaji
-      const response = await axios.get(`${BACKEND_URL}/transaksi/gaji`, {
+      const response = await axios.get(`${BACKEND_URL}/api/transaksi/gaji`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`, // Sesuaikan jika token digunakan
         },

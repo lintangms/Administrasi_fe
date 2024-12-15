@@ -23,7 +23,7 @@ function KaryawanDashboard() {
   useEffect(() => {
     const fetchKoinData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/transaksi/koin-statistik`);
+        const response = await axios.get(`${BACKEND_URL}/api/transaksi/koin-statistik`);
         console.log('API Response:', response.data); // Log respons API
         setKoinData(response.data.data); // Ambil data dari properti "data"
         setLoading(false);
@@ -56,14 +56,14 @@ function KaryawanDashboard() {
       {
         label: 'Total Koin TNL',
         data: koinData.map(item => parseInt(item.tnl_koin, 10)),
-        backgroundColor: '#007bff', // Warna solid hijau
+        backgroundColor: '#F44336', // Warna solid hijau
         borderRadius: 10, // Membuat ujung atas batang melengkung
         barThickness: 30, // Ukuran lebar batang
       },
       {
         label: 'Total Koin LA',
         data: koinData.map(item => parseInt(item.la_koin, 10)),
-        backgroundColor: '#F44336', // Warna solid merah
+        backgroundColor: '#007bff', // Warna solid merah
         borderRadius: 10, // Membuat ujung atas batang melengkung
         barThickness: 30, // Ukuran lebar batang
       },

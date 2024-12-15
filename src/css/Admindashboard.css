@@ -97,4 +97,13 @@
     border-radius: 10px;
     padding: 20px;
   }
+  .chart-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .chart-wrapper {
+    display: inline-block;
+    min-width: 600px; /* Atur sesuai jumlah data */
+  }
   

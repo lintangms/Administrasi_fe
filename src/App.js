@@ -18,6 +18,14 @@ import RiwayatKasbon from "./components/karyawan/RiwayatKasbon.js";  // Impor Pr
 import DataKaryawan from "./components/admin/DataKaryawan.js";
 import DataKasbon from "./components/admin/DataKasbon.js";
 import HitungGaji from "./components/admin/HitungGaji.js";
+import DataAkun from "./components/admin/DataAkun.js";
+import Dispensasi from "./components/karyawan/Dispensasi.js";
+import RiwayatDispensasi from "./components/karyawan/RiwayatDispensasi.js";
+import DataDispensasi from "./components/admin/DataDispen.js";
+import Unsold from "./components/karyawan/Unsold.js";
+import RiwayatUnsold from "./components/karyawan/RiwayatUnsold.js";
+import DataUnsold from "./components/admin/DataUnsold.js";
+import DataAbsensi from "./components/admin/DataAbsensi.js";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // State untuk sidebar
@@ -80,6 +88,26 @@ function App() {
               <RiwayatKasbon />
             </PrivateRoute>
           } />
+          <Route path="/user/dispensasi" element={
+            <PrivateRoute>
+              <Dispensasi />
+            </PrivateRoute>
+          } />
+          <Route path="/user/riwayatdispensasi" element={
+            <PrivateRoute>
+              <RiwayatDispensasi />
+            </PrivateRoute>
+          } />
+          <Route path="/user/unsold" element={
+            <PrivateRoute>
+              <Unsold />
+            </PrivateRoute>
+          } />
+          <Route path="/user/riwayatunsold" element={
+            <PrivateRoute>
+              <RiwayatUnsold />
+            </PrivateRoute>
+          } />
 
           {/* Menggunakan PrivateRouteAdmin untuk halaman yang membutuhkan akses admin */}
           <Route path="/admin/dashboard" element={
@@ -107,7 +135,28 @@ function App() {
               <HitungGaji />
             </PrivateRouteAdmin>
           } />
+          <Route path="/admin/dataakun" element={
+            <PrivateRouteAdmin>
+              <DataAkun />
+            </PrivateRouteAdmin>
+          } />
+          <Route path="/admin/datadispen" element={
+            <PrivateRouteAdmin>
+              <DataDispensasi />
+            </PrivateRouteAdmin>
+          } />
+          <Route path="/admin/dataunsold" element={
+            <PrivateRouteAdmin>
+              <DataUnsold />
+            </PrivateRouteAdmin>
+          } />
+          <Route path="/admin/dataabsensi" element={
+            <PrivateRouteAdmin>
+              <DataAbsensi />
+            </PrivateRouteAdmin>
+          } />
         </Routes>
+        
       </div>
     </div>
   );

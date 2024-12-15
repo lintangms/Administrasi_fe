@@ -46,7 +46,7 @@ const Absensi = () => {
     };
   
     try {
-      const response = await axios.post(`${BACKEND_URL}/transaksi/akun/${idKaryawan}`, absensiData);
+      const response = await axios.post(`${BACKEND_URL}/api/transaksi/akun/${idKaryawan}`, absensiData);
   
       if (response.data.success) {
         setNotif({ message: 'Absensi berhasil dicatat!', type: 'success' });

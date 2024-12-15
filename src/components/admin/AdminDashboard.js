@@ -36,7 +36,7 @@ function AdminDashboard() {
         const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
         // Ambil statistik transaksi
-        const responseStats = await axios.get(`${BACKEND_URL}/transaksi/transaksi`);
+        const responseStats = await axios.get(`${BACKEND_URL}/api/transaksi/getstats`);
         if (responseStats.data.success) {
           setStats({
             totalKaryawan: responseStats.data.data.total_karyawan,
@@ -47,17 +47,17 @@ function AdminDashboard() {
         }
 
         // Ambil statistik koin
-        const responseKoin = await axios.get(`${BACKEND_URL}/transaksi/koin-statistik`);
+        const responseKoin = await axios.get(`${BACKEND_URL}/api/transaksi/koin-statistik`);
         setKoinData(responseKoin.data.data);
 
         // Ambil statistik karyawan bermain game
-        const responseGameStats = await axios.get(`${BACKEND_URL}/transaksi/karyawangame`);
+        const responseGameStats = await axios.get(`${BACKEND_URL}/api/transaksi/karyawangame`);
         if (responseGameStats.data.success) {
           setGameStats(responseGameStats.data.data);
         }
 
         // Ambil top 5 karyawan
-        const responseTopKaryawan = await axios.get(`${BACKEND_URL}/transaksi/karyawantop`);
+        const responseTopKaryawan = await axios.get(`${BACKEND_URL}/api/transaksi/karyawantop`);
         if (responseTopKaryawan.data.success) {
           setTopKaryawan(responseTopKaryawan.data.data);
         }
@@ -78,7 +78,7 @@ function AdminDashboard() {
 
   const fetchLineChartData = async (startDate, endDate, groupBy) => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-    const responseLineChart = await axios.get(`${BACKEND_URL}/transaksi/statsperiode`, {
+    const responseLineChart = await axios.get(`${BACKEND_URL}/api/transaksi/statsperiode`, {
       params: { startDate, endDate, groupBy },
     });
     if (responseLineChart.data.success) {
@@ -146,6 +146,7 @@ function AdminDashboard() {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
@@ -183,6 +184,7 @@ function AdminDashboard() {
       },
     },
   };
+  
 
   const pieChartData = {
     labels: ['Karyawan TNL', 'Karyawan LA'],
@@ -219,6 +221,7 @@ function AdminDashboard() {
   };
 
   return (
+    
     <div style={{ padding: '20px', maxWidth: '1200px', margin: 'auto' }}>
       <div style={cardStyle}>
         <div style={{ display: 'flex', alignItems: 'center', flex: '1 1 20%', margin: '10px' }}>
@@ -252,18 +255,30 @@ function AdminDashboard() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-        <div style={{ ...chartCardStyle, flex: '0 0 66%' }}>
-          <Bar data={chartData} options={chartOptions} />
-        </div>
-        <div style={{ ...chartCardStyle, flex: '0 0 20%' }}>
-          {gameStats && (
-            <>
-              <Pie data={pieChartData} options={pieChartOptions} />
-              <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px', color: '#808080' }} >Game LA: {gameStats.total_karyawan_la} | Game TNL : {gameStats.total_karyawan_tnl}</p>
-            </>
-          )}
-        </div>
-      </div>
+  <div style={{ ...chartCardStyle, flex: '0 0 66%', overflowX: 'auto' }}>
+    <div
+      style={{
+        minWidth: `${Math.max(800, chartData.labels.length * 100)}px`,
+        height: '400px', // Tinggi bar chart diperbesar menjadi 500px
+      }}
+    >
+      {/* Lebar minimal 800px, tapi akan bertambah sesuai jumlah data */}
+      <Bar data={chartData} options={chartOptions} />
+    </div>
+  </div>
+  <div style={{ ...chartCardStyle, flex: '0 0 20%' }}>
+    {gameStats && (
+      <>
+        <Pie data={pieChartData} options={pieChartOptions} />
+        <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px', color: '#808080' }}>
+          Game LA: {gameStats.total_karyawan_la} | Game TNL: {gameStats.total_karyawan_tnl}
+        </p>
+      </>
+    )}
+  </div>
+</div>
+
+
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
         <div style={{ ...chartCardStyle, flex: '0 0 25%' }}>

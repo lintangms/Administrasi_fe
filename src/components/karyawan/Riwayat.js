@@ -36,7 +36,7 @@ const Riwayat = () => {
     const fetchTransaksi = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${BACKEND_URL}/transaksi/handleget/${idKaryawan}`, {
+        const response = await axios.get(`${BACKEND_URL}/api/transaksi/handleget/${idKaryawan}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -200,13 +200,7 @@ const Riwayat = () => {
                     </span>
                   </td>
                   <td>
-                  <button
-                        className="btn-action"
-                        onClick={() => handleButtonClick(transaksi)}
-                        style={{ display: 'inline-block', marginRight: '5px' }}
-                      >
-                        Jual Koin
-                      </button>
+                 
                     <button
                       className="btn-action"
                       onClick={() => handleDetailClick(transaksi)}
@@ -283,44 +277,6 @@ const Riwayat = () => {
         </div>
       </div>
 
-       {/* Modal Jual Koin */}
-       {showModal && (
-        <div className="modal show" style={{ display: 'block' }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Jual Koin</h5>
-              </div>
-              <div className="modal-body">
-                <p><strong>Akun Steam:</strong> {selectedTransaksi?.akun_steam}</p>
-                <p><strong>Jumlah Awal:</strong> {selectedTransaksi?.jumlah_awal}</p>
-                <div className="mb-3">
-                  <label htmlFor="jumlahDijual" className="form-label">
-                    Jumlah Koin yang Dijual
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="jumlahDijual"
-                    value={jumlahDijual}
-                    onChange={(e) => setJumlahDijual(e.target.value)}
-                    min="1"
-                    max={selectedTransaksi?.jumlah_sisa || 0}
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                  Tutup
-                </button>
-                <button type="button" className="btn btn-primary" onClick={handleJualKoin}>
-                  Jual
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Modal Detail */}
       {showDetailModal && selectedTransaksi && (

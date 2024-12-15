@@ -131,4 +131,19 @@
     flex-shrink: 0; /* Jangan mengecil */
     box-sizing: border-box; /* Padding tidak memengaruhi ukuran elemen */
   }
+  .unsold-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #ffffff;
+  }
   
+  .unsold-card {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 100%;
+  }

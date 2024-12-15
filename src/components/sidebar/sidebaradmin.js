@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../css/Sidebaruser.css";
-import { FaHome, FaClipboardList, FaSignOutAlt,FaUsers, FaMoneyCheckAlt, FaMoneyBillAlt } from "react-icons/fa";
+import { FaHome, FaClipboardList, FaSignOutAlt,FaUsers, FaMoneyCheckAlt, FaMoneyBillAlt, FaListUl } from "react-icons/fa";
 
 const SidebarAdmin = ({ isCollapsed }) => {
   const location = useLocation();
@@ -32,6 +32,14 @@ const SidebarAdmin = ({ isCollapsed }) => {
           </li>
           <li>
             <Link
+              to="/admin/dataabsensi"
+              className={location.pathname === "/admin/dataabsensi" ? "active" : ""}
+            >
+              <FaClipboardList /> <span style={{ marginLeft: "10px" }}>Data Absensi</span>
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/admin/data"
               className={location.pathname === "/admin/data" ? "active" : ""}
             >
@@ -48,6 +56,15 @@ const SidebarAdmin = ({ isCollapsed }) => {
           </li>
           <li>
             <Link
+              to="/admin/dataakun"
+              className={location.pathname === "/admin/dataakun" ? "active" : ""}
+            >
+              <FaUsers /> <span style={{ marginLeft: "10px" }}>Data Akun</span>
+            </Link>
+          </li>
+          <li></li>
+          <li>
+            <Link
               to="/admin/datakasbon"
               className={location.pathname === "/admin/datakasbon" ? "active" : ""}
             >
@@ -60,6 +77,22 @@ const SidebarAdmin = ({ isCollapsed }) => {
               className={location.pathname === "/admin/hitunggaji" ? "active" : ""}
             >
               <FaMoneyBillAlt /> <span style={{ marginLeft: "10px" }}>Hitung Gaji</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/admin/datadispen"
+              className={location.pathname === "/admin/datadispen" ? "active" : ""}
+            >
+              <FaListUl /> <span style={{ marginLeft: "10px" }}>Data Dispensasi</span>
+            </Link>
+          </li>
+        <li>
+            <Link
+              to="/admin/dataunsold"
+              className={location.pathname === "/admin/dataunsold" ? "active" : ""}
+            >
+              <FaListUl /> <span style={{ marginLeft: "10px" }}>Data Unsold</span>
             </Link>
           </li>
         </ul>

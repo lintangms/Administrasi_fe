@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../../css/Data.css'; // Pastikan file CSS telah diperbarui sesuai kebutuhan
+import '../../css/Data.css';
 
 const Data = () => {
   const [transaksiList, setTransaksiList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedTransaksi, setSelectedTransaksi] = useState(null);
+  const [jumlahDijual, setJumlahDijual] = useState('');
+  const [tanggal, setTanggal] = useState('');
+  const [server, setServer] = useState('');
+  const [demand, setDemand] = useState('');
+  const [rate, setRate] = useState('');
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [notifikasi, setNotifikasi] = useState('');
+  const [notifikasiStatus, setNotifikasiStatus] = useState('');
+  const [karyawanList, setKaryawanList] = useState([]);
 
-  // State untuk filter dan pagination
   const [filters, setFilters] = useState({
     nama: '',
     jenis: '',
@@ -20,12 +28,28 @@ const Data = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    const fetchKaryawanList = async () => {
+      try {
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+        const response = await axios.get(`${BACKEND_URL}/api/getnama`);
+        setKaryawanList(response.data);
+      } catch (err) {
+        console.error('Gagal mengambil daftar karyawan:', err);
+      }
+    };
+
+    if (showModal) {
+      fetchKaryawanList();
+    }
+  }, [showModal]);
+
+  useEffect(() => {
     const fetchFilteredTransaksi = async () => {
       setLoading(true);
-      setError(''); // Reset error setiap kali kita memulai fetch baru
+      setError('');
       try {
-        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; // Ambil URL dari environment variable
-        const response = await axios.get(`${BACKEND_URL}/transaksi/filter`, {
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+        const response = await axios.get(`${BACKEND_URL}/api/transaksi/filter`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -47,7 +71,7 @@ const Data = () => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-    setPage(1); // Reset ke halaman pertama saat filter berubah
+    setPage(1);
   };
 
   const handleDetailClick = (transaksi) => {
@@ -61,14 +85,103 @@ const Data = () => {
 
   const handleLimitChange = (e) => {
     setLimit(Number(e.target.value));
-    setPage(1); // Reset ke halaman pertama saat limit berubah
+    setPage(1);
+  };
+
+  const handleButtonClick = (transaksi) => {
+    setSelectedTransaksi(transaksi);
+    setJumlahDijual('');
+    setTanggal('');
+    setServer('');
+    setDemand('');
+    setRate('');
+    setShowModal(true);
+  };
+
+  const handleJualKoin = async () => {
+    if (!selectedTransaksi) {
+      tampilkanNotifikasi('Transaksi yang dipilih tidak ditemukan!', 'error');
+      return;
+    }
+
+    const idKoin = selectedTransaksi.id_koin;
+
+    if (!idKoin) {
+      tampilkanNotifikasi('ID Koin tidak ditemukan!', 'error');
+      return;
+    }
+
+    if (!jumlahDijual || jumlahDijual <= 0) {
+      tampilkanNotifikasi('Jumlah dijual harus lebih dari 0!', 'error');
+      return;
+    }
+
+    if (!tanggal || !server || !demand || !rate) {
+      tampilkanNotifikasi('Semua data untuk penjualan harus diisi!', 'error');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/sellkoins/${idKoin}`,
+        { 
+          jumlah_dijual: Number(jumlahDijual), // Pastikan ini adalah angka
+          tanggal,
+          server,
+          demand,
+          rate: Number(rate) // Pastikan ini adalah angka
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        tampilkanNotifikasi('Koin berhasil dijual!', 'success');
+        setTransaksiList((prevTransaksiList) =>
+          prevTransaksiList.map((transaksi) =>
+            transaksi.id_transaksi === selectedTransaksi.id_transaksi
+              ? {
+                  ...transaksi,
+                  jumlah_dijual: transaksi.jumlah_dijual + Number(jumlahDijual),
+                  jumlah_sisa: transaksi.jumlah_sisa - Number(jumlahDijual),
+                }
+              : transaksi
+          )
+        );
+        setShowModal(false);
+      }
+    } catch (err) {
+      console.error('Gagal menjual koin:', err.response ? err.response.data : err);
+      tampilkanNotifikasi(
+        `Gagal menjual koin: ${err.response?.data?.error || 'Coba lagi nanti.'}`,
+        'error'
+      );
+    }
+  };
+
+  const tampilkanNotifikasi = (pesan, status) => {
+    setNotifikasi(pesan);
+    setNotifikasiStatus(status);
+
+    setTimeout(() => {
+      setNotifikasi('');
+      setNotifikasiStatus('');
+    }, 3000);
   };
 
   return (
     <div className="data-container">
       <h2>Riwayat Transaksi</h2>
 
-      {/* Form Filter */}
+      {notifikasi && (
+        <div className={`notifikasi ${notifikasiStatus}`}>
+          {notifikasi}
+        </div>
+      )}
+
       <div className="filter-container">
         <div className="filter-left">
           <input
@@ -101,10 +214,7 @@ const Data = () => {
         </div>
       </div>
 
-      {/* Error Message */}
       {error && <div className="error-message">{error}</div>}
-
-      {/* Loading Indicator */}
       {loading && <div className="loading-message">Loading...</div>}
 
       <table className="data-table">
@@ -158,6 +268,13 @@ const Data = () => {
                   >
                     Detail
                   </button>
+                  <button
+                    className="btn-action"
+                    onClick={() => handleButtonClick(transaksi)}
+                    style={{ marginLeft: '5px' }}
+                  >
+                    Jual Koin
+                  </button>
                 </td>
               </tr>
             ))
@@ -169,7 +286,6 @@ const Data = () => {
         </tbody>
       </table>
 
-      {/* Pagination */}
       <div className="pagination-container">
         <div className="pagination-left">
           <label>Jumlah Data:</label>
@@ -181,7 +297,6 @@ const Data = () => {
           </select>
         </div>
         <div className="pagination-right">
-          {/* Tombol Previous */}
           <button
             className="pagination-btn"
             onClick={() => handlePageChange(page - 1)}
@@ -190,7 +305,6 @@ const Data = () => {
             &lt;
           </button>
 
-          {/* Pagination Numbers */}
           {[...Array(Math.ceil(total / limit)).keys()].map((num) => {
             const pageNumber = num + 1;
             if (
@@ -216,7 +330,6 @@ const Data = () => {
             return null;
           })}
 
-          {/* Tombol Next */}
           <button
             className="pagination-btn"
             onClick={() => handlePageChange(page + 1)}
@@ -227,39 +340,77 @@ const Data = () => {
         </div>
       </div>
 
-      {showDetailModal && (
-        <div className="modal" id="detailTransaksiModal">
+      {showModal && (
+        <div className="modal show" style={{ display: 'block' }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Detail Transaksi</h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={() => setShowDetailModal(false)}
-                >
-                  &times;
-                </button>
+                <h5 className="modal-title">Jual Koin</h5>
               </div>
               <div className="modal-body">
-                <p><strong>Nama Karyawan:</strong> {selectedTransaksi?.nama}</p>
-                <p><strong>Akun Steam:</strong> {selectedTransaksi?.akun_steam}</p>
-                <p><strong>Akun Gmail:</strong> {selectedTransaksi?.akun_gmail}</p>
-                <p><strong>Jenis Game:</strong> {selectedTransaksi?.jenis}</p>
-                <p><strong>Jumlah Awal:</strong> {selectedTransaksi?.jumlah_awal}</p>
-                <p><strong>Jumlah Dijual:</strong> {selectedTransaksi?.jumlah_dijual}</p>
-                <p><strong>Jumlah Sisa:</strong> {selectedTransaksi?.jumlah_sisa}</p>
-                <p><strong>Shift:</strong> {selectedTransaksi?.shift}</p>
-                <p><strong>Keterangan:</strong> {selectedTransaksi?.keterangan}</p>
-                <p><strong>Waktu:</strong> {new Date(selectedTransaksi?.waktu).toLocaleString()}</p>
+                <div className="modal-row">
+                  <p><strong>Akun Steam:</strong> {selectedTransaksi?.akun_steam}</p>
+                  <p><strong>Jumlah Awal:</strong> {selectedTransaksi?.jumlah_awal}</p>
+                </div>
+                <div className="modal-input">
+                  <label htmlFor="jumlahDijual">Jumlah Dijual</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="jumlahDijual"
+                    value={jumlahDijual}
+                    onChange={(e) => setJumlahDijual(e.target.value)}
+                  />
+                </div>
+                <div className="modal-row">
+                  <div className="modal-input">
+                    <label htmlFor="tanggal">Tanggal</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="tanggal"
+                      value={tanggal}
+                      onChange={(e) => setTanggal(e.target.value)}
+                    />
+                  </div>
+                  <div className="modal-input">
+                    <label htmlFor="server">Server</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="server"
+                      value={server}
+                      onChange={(e) => setServer(e.target.value)}
+                    />
+                  </div>
+                  <div className="modal-input">
+                    <label htmlFor="demand">Demand</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="demand"
+                      value={demand}
+                      onChange={(e) => setDemand(e.target.value)}
+                    />
+                  </div>
+                  <div className="modal-input">
+                    <label htmlFor="rate">Rate</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="rate"
+                      value={rate}
+                      onChange={(e) => setRate(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowDetailModal(false)}
-                >
+                < button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
                   Tutup
+                </button>
+                <button type="button" className="btn btn-primary" onClick={handleJualKoin}>
+                  Jual
                 </button>
               </div>
             </div>

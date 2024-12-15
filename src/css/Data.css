@@ -292,4 +292,78 @@
     color: #fff;
     border-color: #007bff;
   }
-  
+  /* Menyesuaikan lebar input agar tidak terlalu lebar */
+#jumlahDijual {
+  width: auto; /* Otomatis menyesuaikan dengan konten */
+  max-width: 200px; /* Membatasi lebar maksimal input */
+  min-width: 740px; /* Menentukan lebar minimal */
+  margin: 0 auto; /* Menempatkan input di tengah jika perlu */
+  padding: 12px; /* Menambah padding untuk kenyamanan penggunaan */
+}
+
+/* Optional: Menambahkan styling untuk focus effect */
+#jumlahDijual:focus {
+  border-color: #007bff; /* Warna border saat fokus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efek shadow saat fokus */
+}
+
+/* Modal */
+.modal-dialog {
+  max-width: 800px; /* Lebarkan modal */
+}
+
+.modal-content {
+  padding: 30px; /* Perbesar padding agar tampilan lebih lega */
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Tambahkan jarak antar kolom */
+}
+
+.modal-input {
+  flex: 1 1 48%; /* Membuat lebar input field lebih lebar (lebih dari 45%) */
+}
+
+.modal-input label {
+  display: block;
+  margin-bottom: 8px; /* Perbesar jarak antara label dan input */
+  font-weight: bold;
+}
+
+.modal-input input,
+.modal-input select {
+  width: 100%; /* Membuat select sama lebar dengan input */
+  padding: 12px; /* Perbesar padding agar field lebih lebar */
+  box-sizing: border-box;
+  border: 1px solid #ccc; /* Menambahkan border seperti input lainnya */
+  border-radius: 4px; /* Membulatkan sudut */
+  font-size: 16px; /* Menentukan ukuran font */
+  margin-top: 10px;
+}
+
+/* Optional: Menambahkan styling untuk focus effect */
+.modal-input input:focus,
+.modal-input select:focus {
+  border-color: #007bff; /* Warna border saat fokus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efek shadow saat fokus */
+}
+
+/* Button styling */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px; /* Perbesar jarak antar tombol */
+}
+
+.btn {
+  padding: 10px 20px; /* Perbesar tombol */
+  font-size: 16px;
+}
