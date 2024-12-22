@@ -28,7 +28,10 @@ function AdminDashboard() {
   const [gameStats, setGameStats] = useState(null);
   const [topKaryawan, setTopKaryawan] = useState([]);
   const [lineChartData, setLineChartData] = useState({ labels: [], datasets: [] });
+  const [koinKaryawanData, setKoinKaryawanData] = useState({ labels: [], datasets: [] });
   const [period, setPeriod] = useState('DAY'); // State untuk memilih periode
+  const [bulan, setBulan] = useState(new Date().getMonth() + 1); // State untuk bulan
+  const [tahun, setTahun] = useState(new Date().getFullYear()); // State untuk tahun
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +67,7 @@ function AdminDashboard() {
 
         // Ambil data untuk line chart berdasarkan periode yang dipilih
         await fetchLineChartData('2023-01-01', '2027-12-31', period);
+        await fetchKoinKaryawanData(bulan, tahun); // Fetch data Koin Karyawan
 
         setLoading(false);
       } catch (err) {
@@ -74,7 +78,7 @@ function AdminDashboard() {
     };
 
     fetchData();
-  }, [period]); // Menambahkan period ke dalam dependency array
+  }, [period, bulan, tahun]); // Menambahkan bulan dan tahun ke dalam dependency array
 
   const fetchLineChartData = async (startDate, endDate, groupBy) => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -89,7 +93,7 @@ function AdminDashboard() {
         labels,
         datasets: [
           {
-            label: 'Total Koin TNL',
+ label: 'Total Koin TNL',
             data: totalKoinTNL,
             borderColor: '#d9534f',
             backgroundColor: 'rgba(255, 38, 0, 0.100)',
@@ -100,8 +104,38 @@ function AdminDashboard() {
             data: totalKoinLA,
             borderColor: '#007bff',
             backgroundColor: 'rgba(0, 123, 255, 0.2)',
-           
             fill: true,
+          },
+        ],
+      });
+    }
+  };
+
+  const fetchKoinKaryawanData = async (bulan, tahun) => {
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const responseKoinKaryawan = await axios.get(`${BACKEND_URL}/api/transaksi/koinkaryawan`, {
+      params: { bulan, tahun },
+    });
+    if (responseKoinKaryawan.data.success) {
+      const labels = responseKoinKaryawan.data.data.map(item => item.nama);
+      const totalKoinTNL = responseKoinKaryawan.data.data.map(item => item.tnl_koin);
+      const totalKoinLA = responseKoinKaryawan.data.data.map(item => item.la_koin);
+      setKoinKaryawanData({
+        labels,
+        datasets: [
+          {
+            label: 'Total Koin TNL Karyawan',
+            data: totalKoinTNL,
+            backgroundColor: '#d9534f',
+            borderRadius: 10,
+            barThickness: 30,
+          },
+          {
+            label: 'Total Koin LA Karyawan',
+            data: totalKoinLA,
+            backgroundColor: '#007bff',
+            borderRadius: 10,
+            barThickness: 30,
           },
         ],
       });
@@ -110,6 +144,16 @@ function AdminDashboard() {
 
   const handlePeriodChange = (event) => {
     setPeriod(event.target.value);
+  };
+
+  const handleBulanChange = (event) => {
+    setBulan(event.target.value);
+    fetchKoinKaryawanData(event.target.value, tahun); // Fetch data Koin Karyawan saat bulan berubah
+  };
+
+  const handleTahunChange = (event) => {
+    setTahun(event.target.value);
+    fetchKoinKaryawanData(bulan, event.target.value); // Fetch data Koin Karyawan saat tahun berubah
   };
 
   if (loading) {
@@ -184,7 +228,6 @@ function AdminDashboard() {
       },
     },
   };
-  
 
   const pieChartData = {
     labels: ['Karyawan TNL', 'Karyawan LA'],
@@ -209,7 +252,7 @@ function AdminDashboard() {
         position: 'top',
       },
       title: {
-        display: true,
+ display: true,
         text: 'Karyawan Berdasarkan Game',
         font: {
           size: 18,
@@ -221,7 +264,6 @@ function AdminDashboard() {
   };
 
   return (
-    
     <div style={{ padding: '20px', maxWidth: '1200px', margin: 'auto' }}>
       <div style={cardStyle}>
         <div style={{ display: 'flex', alignItems: 'center', flex: '1 1 20%', margin: '10px' }}>
@@ -255,30 +297,27 @@ function AdminDashboard() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-  <div style={{ ...chartCardStyle, flex: '0 0 66%', overflowX: 'auto' }}>
-    <div
-      style={{
-        minWidth: `${Math.max(800, chartData.labels.length * 100)}px`,
-        height: '400px', // Tinggi bar chart diperbesar menjadi 500px
-      }}
-    >
-      {/* Lebar minimal 800px, tapi akan bertambah sesuai jumlah data */}
-      <Bar data={chartData} options={chartOptions} />
-    </div>
-  </div>
-  <div style={{ ...chartCardStyle, flex: '0 0 20%' }}>
-    {gameStats && (
-      <>
-        <Pie data={pieChartData} options={pieChartOptions} />
-        <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px', color: '#808080' }}>
-          Game LA: {gameStats.total_karyawan_la} | Game TNL: {gameStats.total_karyawan_tnl}
-        </p>
-      </>
-    )}
-  </div>
-</div>
-
-
+        <div style={{ ...chartCardStyle, flex: '0 0 66%', overflowX: 'auto' }}>
+          <div
+            style={{
+              minWidth: `${Math.max(800, chartData.labels.length * 100)}px`,
+              height: '400px',
+            }}
+          >
+            <Bar data={chartData} options={chartOptions} />
+          </div>
+        </div>
+        <div style={{ ...chartCardStyle, flex: '0 0 20%' }}>
+          {gameStats && (
+            <>
+              <Pie data={pieChartData} options={pieChartOptions} />
+              <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px', color: '#808080' }}>
+                Game LA: {gameStats.total_karyawan_la} | Game TNL: {gameStats.total_karyawan_tnl}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
         <div style={{ ...chartCardStyle, flex: '0 0 25%' }}>
@@ -288,6 +327,7 @@ function AdminDashboard() {
               <thead>
                 <tr>
                   <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Nama</th>
+                  <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Koin</th>
                   <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>TNL</th>
                   <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>LA</th>
                 </tr>
@@ -307,20 +347,13 @@ function AdminDashboard() {
           )}
         </div>
         <div style={{ ...chartCardStyle, flex: '0 0 66%' }}>
-        <div style={{ marginTop: '20px' }}>
-        <label htmlFor="period-select" style={{ marginRight: '10px' }}>Pilih Periode:</label>
-        <select id="period-select" value={period} onChange={handlePeriodChange}>
-          <option value="DAY">Hari</option>
-          <option value="MONTH">Bulan</option>
-          <option value="WEEK">Minggu</option>
-        </select>
-      </div>
+          
           <Line 
             data={{
               ...lineChartData,
               datasets: lineChartData.datasets.map(dataset => ({
                 ...dataset,
-                tension: 0.4, // Membuat garis menjadi smooth
+                tension: 0.4,
               })),
             }} 
             options={{
@@ -365,7 +398,37 @@ function AdminDashboard() {
           />
         </div>
       </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
+  <div style={{ ...chartCardStyle, flex: '0 0 97%', overflowX: 'auto' }}>
+    <h4 style={{ textAlign: 'center', marginTop: '0', fontSize: '18px', color: '#808080' }}>Koin Karyawan</h4>
+    <div style={{ marginTop: '20px' }}>
+      <label htmlFor="bulan-select" style={{ marginRight: '10px' }}>Pilih Bulan:</label>
+      <select id="bulan-select" value={bulan} onChange={handleBulanChange}>
+        {[...Array(12).keys()].map(i => (
+          <option key={i} value={i + 1}>{i + 1}</option>
+        ))}
+      </select>
+      <label htmlFor="tahun-select" style={{ marginLeft: '20px', marginRight: '10px' }}>Pilih Tahun:</label>
+      <select id="tahun-select" value={tahun} onChange={handleTahunChange}>
+        {[2022, 2023, 2024, 2025, 2026].map(year => (
+          <option key={year} value={year}>{year}</option>
+        ))}
+      </select>
     </div>
+    <div
+      style={{
+        minWidth: `${Math.max(1300, koinKaryawanData.labels.length * 100)}px`,
+        height: '500px',
+      }}
+    >
+      <Bar data={koinKaryawanData} options={chartOptions} />
+    </div>
+  </div>
+</div>
+
+</div>
+
+    
   );
 }
 

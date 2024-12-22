@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../css/Sidebaruser.css";
-import { FaHome, FaClipboardList, FaSignOutAlt,FaUsers, FaMoneyCheckAlt, FaMoneyBillAlt, FaListUl } from "react-icons/fa";
+import { FaHome, FaClipboardList, FaSignOutAlt,FaUsers, FaMoneyCheckAlt, FaMoneyBillAlt, FaListUl, FaInstalod, FaDatabase, FaCoins } from "react-icons/fa";
 
 const SidebarAdmin = ({ isCollapsed }) => {
   const location = useLocation();
@@ -54,15 +54,15 @@ const SidebarAdmin = ({ isCollapsed }) => {
               <FaUsers /> <span style={{ marginLeft: "10px" }}>Data Karyawan</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/admin/dataakun"
               className={location.pathname === "/admin/dataakun" ? "active" : ""}
             >
               <FaUsers /> <span style={{ marginLeft: "10px" }}>Data Akun</span>
             </Link>
-          </li>
-          <li></li>
+          </li> */}
+          
           <li>
             <Link
               to="/admin/datakasbon"
@@ -87,6 +87,14 @@ const SidebarAdmin = ({ isCollapsed }) => {
               <FaListUl /> <span style={{ marginLeft: "10px" }}>Data Dispensasi</span>
             </Link>
           </li>
+          <li>
+            <Link
+              to="/admin/datakoin"
+              className={location.pathname === "/admin/datakoin" ? "active" : ""}
+            >
+              <FaCoins /> <span style={{ marginLeft: "10px" }}>Data Koin</span>
+            </Link>
+          </li>
         <li>
             <Link
               to="/admin/dataunsold"
@@ -95,13 +103,21 @@ const SidebarAdmin = ({ isCollapsed }) => {
               <FaListUl /> <span style={{ marginLeft: "10px" }}>Data Unsold</span>
             </Link>
           </li>
+          <li>
+            <Link
+              to="/admin/datapenjualan"
+              className={location.pathname === "/admin/datapenjualan" ? "active" : ""}
+            >
+              <FaDatabase /> <span style={{ marginLeft: "10px" }}>Data Penjualan</span>
+            </Link>
+          </li>
         </ul>
       </nav>
-      <div className="logout">
+      {/* <div className="logout">
         <button onClick={handleLogout}>
           <FaSignOutAlt /> <span style={{ marginLeft: "10px" }}>Logout</span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

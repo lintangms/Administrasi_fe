@@ -7,9 +7,10 @@ const Absensi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({
+    id_karyawan: '',
     nama: '',
-    jenis: '',
-    tanggal: '',
+    bulan: '',
+    tahun: '',
   });
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -70,25 +71,7 @@ const Absensi = () => {
       {/* Form Filter */}
       <div className="filter-container">
         <div className="filter-left">
-          <input
-            type="date"
-            name="tanggal"
-            value={filters.tanggal}
-            onChange={handleFilterChange}
-            className="filter-input"
-          />
-          <select
-            name="jenis"
-            value={filters.jenis}
-            onChange={handleFilterChange}
-            className="filter-input"
-          >
-            <option value="">Semua Jenis</option>
-            <option value="LA">LA</option>
-            <option value="TNL">TNL</option>
-          </select>
-        </div>
-        <div className="filter-right">
+         
           <input
             type="text"
             name="nama"
@@ -97,6 +80,28 @@ const Absensi = () => {
             onChange={handleFilterChange}
             className="filter-input"
           />
+          <select
+            name="bulan"
+            value={filters.bulan}
+            onChange={handleFilterChange}
+            className="filter-input"
+          >
+            <option value="">Semua Bulan</option>
+            {[...Array(12).keys()].map(i => (
+              <option key={i + 1} value={i + 1}>{i + 1}</option>
+            ))}
+          </select>
+          <select
+            name="tahun"
+            value={filters.tahun}
+            onChange={handleFilterChange}
+            className="filter-input"
+          >
+            <option value="">Semua Tahun</option>
+            {[2023, 2024, 2025].map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -105,14 +110,7 @@ const Absensi = () => {
           <tr>
             <th>No</th>
             <th>Nama Karyawan</th>
-            <th>Jenis Game</th>
-            <th>Jumlah Awal</th>
-            <th>Jumlah Dijual</th>
-            <th>Jumlah Sisa</th>
-            <th>Shift </th>
-            <th>Keterangan</th>
-            <th>Waktu</th>
-            <th>Jam Kerja</th>
+            <th>Total Jam Kerja</th>
           </tr>
         </thead>
         <tbody>
@@ -121,27 +119,12 @@ const Absensi = () => {
               <tr key={index}>
                 <td>{(page - 1) * limit + index + 1}</td>
                 <td className="nama">{absensi.nama_karyawan}</td>
-                <td>{absensi.jenis}</td>
-                <td className="koin">{absensi.jumlah_awal}</td>
-                <td className="koin">{absensi.jumlah_dijual}</td>
-                <td className="koin">{absensi.jumlah_sisa}</td>
-                <td>
-                  <span className={`shift ${absensi.shift.toLowerCase()} shift`}>
-                    {absensi.shift}
-                  </span>
-                </td>
-                <td>
-                  <span className={`keterangan ${absensi.keterangan.toLowerCase()}`}>
-                    {absensi.keterangan}
-                  </span>
-                </td>
-                <td>{new Date(absensi.waktu).toLocaleString()}</td>
-                <td>{absensi.jam_kerja || 'N/A'}</td>
+                <td>{absensi.total_jam_kerja}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="10">Tidak ada data absensi tersedia</td>
+              <td colSpan="3">Tidak ada data absensi tersedia</td>
             </tr>
           )}
         </tbody>
