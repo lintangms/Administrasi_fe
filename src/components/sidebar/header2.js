@@ -3,9 +3,12 @@ import axios from "axios";
 import "../../css/Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Header2({ toggleSidebar, isSidebarCollapsed }) {
   const [nama, setNama] = useState("");
+  const navigate = useNavigate();
 
   const idKaryawan = localStorage.getItem("id_karyawan");
 
@@ -35,18 +38,33 @@ function Header2({ toggleSidebar, isSidebarCollapsed }) {
     fetchNamaKaryawan();
   }, [idKaryawan]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+
+    navigate("/loginadmin");
+  };
+
   return (
     <header
       className="header"
       style={{
-        marginLeft: isSidebarCollapsed ? "0" : "250px", // Menyesuaikan dengan sidebar
-        width: isSidebarCollapsed ? "100%" : "calc(100% - 250px)", // Mengatur lebar header
+        marginLeft: isSidebarCollapsed ? "0" : "250px",
+        width: isSidebarCollapsed ? "100%" : "calc(100% - 250px)",
       }}
     >
-      <button className="toggle-btn" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faBars} /> {/* Menampilkan ikon bars */}
-      </button>
-      <h1>Selamat Datang</h1>
+      <div className="header-left">
+        <button className="toggle-btn" onClick={toggleSidebar}>
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+        <h1 className="welcome-text">Selamat Datang, {nama}</h1>
+      </div>
+      <div className="header-right">
+        <button className="logout-btn" onClick={handleLogout}>
+          <FaSignOutAlt /> <span style={{ marginLeft: "10px" }}>Logout</span>
+        </button>
+      </div>
     </header>
   );
 }

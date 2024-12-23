@@ -9,7 +9,8 @@ import Header2 from './components/sidebar/header2'; // Header untuk admin
 import Absensi from './components/karyawan/Absensi';
 import Riwayat from './components/karyawan/Riwayat';
 import Kasbon from "./components/karyawan/Kasbon.js";
-import LoginAdmin from './components/admin/LoginAdmin';
+// import LoginAdmin from './components/admin/LoginAdmin';
+import LoginAdmin from "./components/admin/LoginAdmin.js";
 import AdminDashboard from './components/admin/AdminDashboard';
 import Data from './components/admin/Data';
 import PrivateRoute from './components/PrivateRoute';  // Impor PrivateRoute untuk user
@@ -26,6 +27,8 @@ import Unsold from "./components/karyawan/Unsold.js";
 import RiwayatUnsold from "./components/karyawan/RiwayatUnsold.js";
 import DataUnsold from "./components/admin/DataUnsold.js";
 import DataAbsensi from "./components/admin/DataAbsensi.js";
+import DataPenjualan from "./components/admin/DataPenjualan.js";
+import DataKoin from "./components/admin/DataKoin.js";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // State untuk sidebar
@@ -153,6 +156,16 @@ function App() {
           <Route path="/admin/dataabsensi" element={
             <PrivateRouteAdmin>
               <DataAbsensi />
+            </PrivateRouteAdmin>
+          } />
+           <Route path="/admin/datapenjualan" element={
+            <PrivateRouteAdmin>
+              <DataPenjualan />
+            </PrivateRouteAdmin>
+          } />
+           <Route path="/admin/datakoin" element={
+            <PrivateRouteAdmin>
+              <DataKoin />
             </PrivateRouteAdmin>
           } />
         </Routes>

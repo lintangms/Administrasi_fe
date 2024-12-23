@@ -367,3 +367,28 @@
   padding: 10px 20px; /* Perbesar tombol */
   font-size: 16px;
 }
+.btn-filter {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  color: black; /* Warna default tulisan hitam */
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-filter.active {
+  background-color: #007bff !important; /* Latar biru saat aktif */
+  color: white !important; /* Tulisan putih saat aktif */
+  border-color: #007bff !important;
+}
+
+.btn-filter:not(.active) {
+  color: black !important; /* Warna hitam saat tidak aktif */
+}
+.data-container {
+  padding: 0;
+  margin: 0;
+}
+
+

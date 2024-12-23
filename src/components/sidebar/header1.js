@@ -43,10 +43,12 @@ function Header1({ toggleSidebar, isSidebarCollapsed }) {
         width: isSidebarCollapsed ? "100%" : "calc(100% - 250px)", // Mengatur lebar header
       }}
     >
-      <button className="toggle-btn" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faBars} /> {/* Menampilkan ikon bars */}
-      </button>
-      <h1>Selamat Datang, {nama}</h1>
+      <div className="header-left">
+              <button className="toggle-btn" onClick={toggleSidebar}>
+                <FontAwesomeIcon icon={faBars} />
+              </button>
+              <h1 className="welcome-text">Selamat Datang, {nama}</h1>
+            </div>
     </header>
   );
 }

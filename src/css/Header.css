@@ -2,48 +2,55 @@
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Pisahkan kiri dan kanan */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background-color: #007bff;
   color: white;
-  padding: 5px 10px; /* Mengurangi padding vertikal untuk memperkecil ukuran header */
-  z-index: 999;
+  padding: 5px 10px;
   box-sizing: border-box;
-  transition: width 0.3s ease, margin-left 0.3s ease; /* Menambahkan transisi untuk perubahan lebar */
+  z-index: 999;
 }
 
-/* Styling untuk tombol */
-.toggle-btn {
-  background-color: #007bff;
-  border: none;
-  border-radius: 50%;
-  color: #ffffff;
-  cursor: pointer;
-  width: 35px; /* Menyesuaikan ukuran tombol */
-  height: 30px; /* Menyesuaikan ukuran tombol */
+/* Styling untuk bagian kiri */
+.header-left {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 10px; /* Mengurangi jarak antara tombol dan teks */
-  font-size: 18px; /* Menyesuaikan ukuran ikon */
 }
 
-.toggle-btn:hover {
-  background-color: #007bff;
+.toggle-btn {
+  margin-right: 15px;
+  background: none;
+  border: none;
   color: white;
+  font-size: 20px;
+  cursor: pointer;
 }
 
-/* Styling untuk teks header */
-.header h1 {
-  font-size: 20px; /* Mengurangi ukuran font teks header */
-  color: white;
+.welcome-text {
   margin: 0;
+  font-size: 20px;
 }
 
-@media (max-width: 768px) {
-  .header h1 {
-    display: none; /* Sembunyikan teks "Selamat Datang" saat layar kecil */
-  }
+/* Styling untuk bagian kanan */
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  padding: 5px 15px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #cc0000;
 }
