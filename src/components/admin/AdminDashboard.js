@@ -67,7 +67,6 @@ function AdminDashboard() {
 
         // Ambil data untuk line chart berdasarkan periode yang dipilih
         await fetchLineChartData(bulan, tahun, period);
-        await fetchKoinKaryawanData(bulan, tahun); // Fetch data Koin Karyawan
 
         setLoading(false);
       } catch (err) {
@@ -84,116 +83,123 @@ function AdminDashboard() {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
     const startDate = `${tahun}-${bulan}-01`;
     const endDate = `${tahun}-${bulan}-31`; // Menggunakan akhir bulan untuk rentang tanggal
-    const responseLineChart = await axios.get(`${BACKEND_URL}/api/transaksi/statsperiode`, {
-      params: { startDate, endDate, groupBy },
-    });
-    if (responseLineChart.data.success) {
-      const labels = responseLineChart.data.data.map(item => item.period);
-      const totalKoinTNL = responseLineChart.data.data.map(item => item.total_koin_tnl);
-      const totalKoinLA = responseLineChart.data.data.map (item => item.total_koin_la);
-      const totalTNLTerjual = responseLineChart.data.data.map(item => item.tnl_terjual);
-      const totalLATerjual = responseLineChart.data.data.map(item => item.la_terjual);
-      setLineChartData({
-        labels,
-        datasets: [
-          {
-            label: 'Total Koin TNL',
-            data: totalKoinTNL,
-            borderColor: '#d9534f',
-            backgroundColor: 'rgba(255, 38, 0, 0.100)',
-            fill: true,
-          },
-          {
-            label: 'Total Koin LA',
-            data: totalKoinLA,
-            borderColor: '#007bff',
-            backgroundColor: 'rgba(0, 123, 255, 0.2)',
-            fill: true,
-          },
-          {
-            label: 'Total TNL Terjual',
-            data: totalTNLTerjual,
-            borderColor: '#ff69b4',
-            backgroundColor: 'rgba(255, 105, 180, 0.2)',
-            fill: true,
-          },
-          {
-            label: 'Total LA Terjual',
-            data: totalLATerjual,
-            borderColor: '#add8e6',
-            backgroundColor: 'rgba(173, 216, 230, 0.2)',
-            fill: true,
-          },
-        ],
+    try {
+      const responseLineChart = await axios.get(`${BACKEND_URL}/api/transaksi/statsperiode`, {
+        params: { startDate, endDate, groupBy },
       });
+ if (responseLineChart.data.success) {
+        const labels = responseLineChart.data.data.map(item => item.period);
+        const totalKoinTNL = responseLineChart.data.data.map(item => item.total_koin_tnl);
+        const totalKoinLA = responseLineChart.data.data.map(item => item.total_koin_la);
+        const totalTNLTerjual = responseLineChart.data.data.map(item => item.tnl_terjual);
+        const totalLATerjual = responseLineChart.data.data.map(item => item.la_terjual);
+        setLineChartData({
+          labels,
+          datasets: [
+            {
+              label: 'Total Koin TNL',
+              data: totalKoinTNL,
+              borderColor: '#d9534f',
+              backgroundColor: 'rgba(255, 38, 0, 0.100)',
+              fill: true,
+            },
+            {
+              label: 'Total Koin LA',
+              data: totalKoinLA,
+              borderColor: '#007bff',
+              backgroundColor: 'rgba(0, 123, 255, 0.2)',
+              fill: true,
+            },
+            {
+              label: 'Total TNL Terjual',
+              data: totalTNLTerjual,
+              borderColor: '#ff69b4',
+              backgroundColor: 'rgba(255, 105, 180, 0.2)',
+              fill: true,
+            },
+            {
+              label: 'Total LA Terjual',
+              data: totalLATerjual,
+              borderColor: '#add8e6',
+              backgroundColor: 'rgba(173, 216, 230, 0.2)',
+              fill: true,
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching line chart data:', error);
     }
   };
 
   const fetchKoinKaryawanData = async (bulan, tahun) => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-    const responseKoinKaryawan = await axios.get(`${BACKEND_URL}/api/transaksi/koinkaryawan`, {
-      params: { bulan, tahun },
-    });
-    if (responseKoinKaryawan.data.success) {
-      const labels = responseKoinKaryawan.data.data.map(item => item.nama);
-      const totalKoinTNL = responseKoinKaryawan.data.data.map(item => item.tnl_koin);
-      const totalDijualTNL = responseKoinKaryawan.data.data.map(item => item.tnl_dijual);
-      const totalKoinLA = responseKoinKaryawan.data.data.map(item => item.la_koin);
-      const totalDijualLA = responseKoinKaryawan.data.data.map(item => item.la_dijual);
-      setKoinKaryawanData({
-        labels,
-        datasets: [
-          {
-            label: 'Total Koin TNL',
-            data: totalKoinTNL,
-            backgroundColor: '#d9534f',
-            borderRadius: 10,
-            barThickness: 30,
-            stack: 'Stack 0',
-          },
-          {
-            label: 'Total Dijual TNL',
-            data: totalDijualTNL,
-            backgroundColor: '#d41710',
-            borderRadius: 10,
-            barThickness: 30,
-            stack: 'Stack 0',
-          },
-          {
-            label: 'Total Koin LA',
-            data: totalKoinLA,
-            backgroundColor: '#007bff',
-            borderRadius: 10,
-            barThickness: 30,
-            stack: 'Stack 1',
-          },
-          {
-            label: 'Total Dijual LA',
-            data: totalDijualLA,
-            backgroundColor: '#add8e6',
-            borderRadius: 10,
-            barThickness: 30,
-            stack: 'Stack 1',
-          },
-        ],
+    try {
+      const responseKoinKaryawan = await axios.get(`${BACKEND_URL}/api/transaksi/koinkaryawan`, {
+        params: { bulan, tahun },
       });
+      if (responseKoinKaryawan.data.success) {
+        const labels = responseKoinKaryawan.data.data.map(item => item.nama);
+        const totalKoinTNL = responseKoinKaryawan.data.data.map(item => item.tnl_koin);
+        const totalDijualTNL = responseKoinKaryawan.data.data.map(item => item.tnl_dijual);
+        const totalKoinLA = responseKoinKaryawan.data.data.map(item => item.la_koin);
+        const totalDijualLA = responseKoinKaryawan.data.data.map(item => item.la_dijual);
+        setKoinKaryawanData({
+          labels,
+          datasets: [
+            {
+              label: 'Total Koin TNL',
+              data: totalKoinTNL,
+              backgroundColor: '#d9534f',
+              borderRadius: 10,
+              barThickness: 30,
+              stack: 'Stack 0',
+            },
+            {
+              label: 'Total Dijual TNL',
+              data: totalDijualTNL,
+              backgroundColor: '#d41710',
+              borderRadius: 10,
+              barThickness: 30,
+              stack: 'Stack 0',
+            },
+            {
+              label: 'Total Koin LA',
+              data: totalKoinLA,
+              backgroundColor: '#007bff',
+              borderRadius: 10,
+              barThickness: 30,
+              stack: 'Stack 1',
+            },
+            {
+              label: 'Total Dijual LA',
+              data: totalDijualLA,
+              backgroundColor: '#add8e6',
+              borderRadius: 10,
+              barThickness: 30,
+              stack: 'Stack 1',
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching koin karyawan data:', error);
     }
   };
 
   const handlePeriodChange = (event) => {
     setPeriod(event.target.value);
+    fetchLineChartData(bulan, tahun, event.target.value); // Fetch data untuk line chart saat periode berubah
   };
 
   const handleBulanChange = (event) => {
     setBulan(event.target.value);
     fetchKoinKaryawanData(event.target.value, tahun);
-    fetchLineChartData(event.target.value, tahun, period); // Fetch data untuk line chart saat bulan berubah
   };
 
   const handleTahunChange = (event) => {
     setTahun(event.target.value);
     fetchKoinKaryawanData(bulan, event.target.value);
-    fetchLineChartData(bulan, event.target.value, period); // Fetch data untuk line chart saat tahun berubah
   };
 
   if (loading) {
@@ -222,7 +228,7 @@ function AdminDashboard() {
       {
         label: 'Total Dijual TNL',
         data: koinData.map(item => parseInt(item.tnl_terjual, 10)),
-        backgroundColor: '#d41710', // Warna pink untuk TNL Dijual
+        backgroundColor: '#d41710',
         borderRadius: 10,
         barThickness: 30,
         stack: 'Stack 0',
@@ -238,7 +244,7 @@ function AdminDashboard() {
       {
         label: 'Total Dijual LA',
         data: koinData.map(item => parseInt(item.la_terjual, 10)),
-        backgroundColor: '#0056b3', // Warna biru muda untuk LA Dijual
+        backgroundColor: '#0056b3',
         borderRadius: 10,
         barThickness: 30,
         stack: 'Stack 1',
@@ -255,7 +261,7 @@ function AdminDashboard() {
       },
       title: {
         display: true,
-        text: 'Statistik Koin', //STATISTIK KOIN
+        text: 'Statistik Koin',
         font: {
           size: 18,
           weight: 'bold',
@@ -275,7 +281,7 @@ function AdminDashboard() {
       },
       y: {
         beginAtZero: true,
-        stacked: true, // Menambahkan properti stacked
+        stacked: true,
         grid: {
           color: '#E0E0E0',
         },
@@ -317,7 +323,7 @@ function AdminDashboard() {
       },
       y: {
         beginAtZero: true,
-        stacked: true, // Menambahkan properti stacked
+        stacked: true,
         grid: {
           color: '#E0E0E0',
         },
@@ -373,9 +379,10 @@ function AdminDashboard() {
             <h4 style={{ margin: 0, fontSize: '14px', color: '#808080' }}>Total Karyawan</h4>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>{stats.totalKaryawan}</p>
           </div>
+        
         </div>
         <div style={{ display: 'flex', alignItems: 'center', flex: '1 1 20%', margin: '10px' }}>
-          <FaCoins size={30} color ="#4CAF50" style={{ marginRight: '10px' }} />
+          <FaCoins size={30} color="#4CAF50" style={{ marginRight: '10px' }} />
           <div>
             <h4 style={{ margin: 0, fontSize: '14px', color: '#808080' }}>Total Koin TNL</h4>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>{stats.totalKoinTNL}</p>
@@ -419,6 +426,7 @@ function AdminDashboard() {
           )}
         </div>
       </div>
+      
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
         <div style={{ ...chartCardStyle, flex: '0 0 25%' }}>
@@ -439,7 +447,6 @@ function AdminDashboard() {
                     <td style={{ padding: '10px', textAlign: 'left' }}>{karyawan.nama}</td>
                     <td style={{ padding: '10px', textAlign: 'left' }}>{karyawan.total_koin_tnl}</td>
                     <td style={{ padding: '10px', textAlign: 'left' }}>{karyawan.total_koin_la}</td>
-
                   </tr>
                 ))}
               </tbody>
@@ -449,63 +456,63 @@ function AdminDashboard() {
           )}
         </div>
         <div style={{ ...chartCardStyle, flex: '0 0 66%' }}>
-    <div style={{ marginTop: '20px' }}>
-    <label htmlFor="period-select" style={{ marginRight: '10px' }}>Pilih Periode:</label>
-    <select id="period-select" value={period} onChange={handlePeriodChange}>
-      <option value="DAY">Hari</option>
-      <option value="MONTH">Bulan</option>
-      <option value="WEEK">Minggu</option>
-    </select>
-  </div>
-      <Line 
-        data={{
-          ...lineChartData,
-          datasets: lineChartData.datasets.map(dataset => ({
-            ...dataset,
-            tension: 0.4, // Membuat garis menjadi smooth
-          })),
-        }} 
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Total Koin Periode',
-              font: {
-                size: 18,
-                weight: 'bold',
-              },
-            },
-          },
-          scales: {
-            x: {
-              grid: {
-                display: false,
-              },
-              ticks: {
-                font: {
-                  size: 14,
+          <div style={{ marginTop: '20px' }}>
+            <label htmlFor="period-select" style={{ marginRight: '10px' }}>Pilih Periode:</label>
+            <select id="period-select" value={period} onChange={handlePeriodChange}>
+              <option value="DAY">Hari</option>
+              <option value="MONTH">Bulan</option>
+              <option value="WEEK">Minggu</option>
+            </select>
+          </div>
+          <Line 
+            data={{
+              ...lineChartData,
+              datasets: lineChartData.datasets.map(dataset => ({
+                ...dataset,
+                tension: 0.4, // Membuat garis menjadi smooth
+              })),
+            }} 
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: 'Total Koin Periode',
+                  font: {
+                    size: 18,
+                    weight: 'bold',
+                  },
                 },
               },
-            },
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: '#E0E0E0',
-              },
-              ticks: {
-                font: {
-                  size: 14,
+              scales: {
+                x: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    font: {
+                      size: 14,
+                    },
+                  },
+                },
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: '#E0E0E0',
+                  },
+                  ticks: {
+                    font: {
+                      size: 14,
+                    },
+                  },
                 },
               },
-            },
-          },
-        }} 
-      />
-    </div>
+            }} 
+          />
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
         <div style={{ ...chartCardStyle, flex: '0 0 97%', overflowX: 'auto' }}>
